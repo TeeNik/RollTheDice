@@ -6,4 +6,4 @@
 
 [node name="PlayerCharacter" parent="." instance=ExtResource("1_hljw8")]
 position = Vector2(131, 89)
-scale = Vector2(5, 5)
+MovementSpeed = null
