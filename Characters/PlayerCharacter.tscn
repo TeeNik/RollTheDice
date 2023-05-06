@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bleqxp5fhefij"]
+
+[ext_resource type="Texture2D" uid="uid://j7jn2s27pntx" path="res://Art/Dino/DinoSprites - doux.png" id="1_vter0"]
+
+[node name="PlayerCharacter" type="CharacterBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_vter0")
+hframes = 24
+frame = 3
