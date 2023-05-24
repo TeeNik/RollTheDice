@@ -20,28 +20,41 @@ void ofApp::setup()
 			B1cpu[index] = (rand() / float(RAND_MAX) < 0.000021f) ? 1.0f : 0.0f;
 			B2cpu[index] = 0.0f;
 		}
-
-		constexpr GLsizeiptr bytes = WIDTH * HEIGHT * sizeof(float);
-		A1.allocate(bytes, A1cpu, GL_STATIC_DRAW);
-		A2.allocate(bytes, A2cpu, GL_STATIC_DRAW);
-		B1.allocate(bytes, B1cpu, GL_STATIC_DRAW);
-		B2.allocate(bytes, B2cpu, GL_STATIC_DRAW);
-
-		A1.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
-		A2.bindBase(GL_SHADER_STORAGE_BUFFER, 1);
-		B1.bindBase(GL_SHADER_STORAGE_BUFFER, 2);
-		B2.bindBase(GL_SHADER_STORAGE_BUFFER, 3);
 	}
+
+	constexpr GLsizeiptr bytes = WIDTH * HEIGHT * sizeof(float);
+	A1.allocate(bytes, A1cpu, GL_STATIC_DRAW);
+	A2.allocate(bytes, A2cpu, GL_STATIC_DRAW);
+	B1.allocate(bytes, B1cpu, GL_STATIC_DRAW);
+	B2.allocate(bytes, B2cpu, GL_STATIC_DRAW);
+
+	A1.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
+	A2.bindBase(GL_SHADER_STORAGE_BUFFER, 1);
+	B1.bindBase(GL_SHADER_STORAGE_BUFFER, 2);
+	B2.bindBase(GL_SHADER_STORAGE_BUFFER, 3);
 }
 
 //--------------------------------------------------------------
 void ofApp::update()
 {
+	//binding (ping pong)
+	static int c = 1;
+	c = 1 - c;
+
+	A1.bindBase(GL_SHADER_STORAGE_BUFFER, 0 + c);
+	A2.bindBase(GL_SHADER_STORAGE_BUFFER, 1 - c);
+	B1.bindBase(GL_SHADER_STORAGE_BUFFER, 2 + c);
+	B2.bindBase(GL_SHADER_STORAGE_BUFFER, 2 + 1 - c);
+
+	shader.begin();
+	shader.dispatchCompute(WIDTH / 20, HEIGHT / 20, 1);
+	shader.end();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw()
 {
+	texture.draw(0, 0);
 }
 
 //--------------------------------------------------------------
