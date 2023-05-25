@@ -32,7 +32,7 @@ void main()
 	i = int(gl_GlobalInvocationID.x);
 	j = int(gl_GlobalInvocationID.y);
 
-	const int W = 1280;
+	const int W = 1080;
 	const int H = 720;
 	int idx = i + j * W;
 
