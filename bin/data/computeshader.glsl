@@ -7,6 +7,18 @@ layout(binding = 3) buffer dcB2 { float B2 []; };
 layout(rgba8, binding = 4) uniform writeonly image2D img;
 layout(local_size_x = 20, local_size_y = 20, local_size_z = 1) in;
 
+
+uint hash(uint state) 
+{
+	state ^= 2747636419u;
+	state *= 2654435769u;
+	state ^= state >> 16;
+	state *= 2654435769u;
+	state ^= state >> 16;
+	state *= 2654435769u;
+	return state;
+}
+
 int per(int x, int nx) 
 {
 	if (x < 0) x += nx;
@@ -74,8 +86,7 @@ void main()
     // visualization
     float a = A2[idx];
     float b = B1[idx];
-    vec4 col = color(1.51*a+1.062*b);//b*0.8+a*1.3);
+    vec4 col = color(1.51*a+1.062*b);
+
     imageStore(img,ivec2(gl_GlobalInvocationID.xy),col);
-
-
 }

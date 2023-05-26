@@ -32,6 +32,8 @@ void ofApp::setup()
 	A2.bindBase(GL_SHADER_STORAGE_BUFFER, 1);
 	B1.bindBase(GL_SHADER_STORAGE_BUFFER, 2);
 	B2.bindBase(GL_SHADER_STORAGE_BUFFER, 3);
+
+	texture.setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 }
 
 //--------------------------------------------------------------
