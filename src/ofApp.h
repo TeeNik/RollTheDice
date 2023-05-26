@@ -2,8 +2,20 @@
 
 #include "ofMain.h"
 
-#define WIDTH 1080
-#define HEIGHT 720
+
+#define SCREEN_WIDTH 1080
+#define SCREEN_HEIGHT 720
+
+#define WIDTH 100
+#define HEIGHT 100
+#define NUM_AGENTS 100
+
+struct Agent
+{
+	ofVec2f pos;
+	float angle;
+};
+
 
 class ofApp : public ofBaseApp{
 
@@ -26,15 +38,9 @@ public:
 
 private:
 
-	ofBufferObject A1;
-	ofBufferObject B1;
-	ofBufferObject A2;
-	ofBufferObject B2;
+	ofBufferObject agentsBuffer;
 
-	float A1cpu[WIDTH * HEIGHT];
-	float B1cpu[WIDTH * HEIGHT];
-	float A2cpu[WIDTH * HEIGHT];
-	float B2cpu[WIDTH * HEIGHT];
+	std::vector<Agent> agents;
 
 	ofTexture texture;
 	ofShader shader;

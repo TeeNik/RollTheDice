@@ -3,52 +3,41 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
-	shader.setupShaderFromFile(GL_COMPUTE_SHADER, "computeshader.glsl");
+	shader.setupShaderFromFile(GL_COMPUTE_SHADER, "TrailMapShader.glsl");
 	shader.linkProgram();
 
 	texture.allocate(WIDTH, HEIGHT, GL_RGBA8);
-	texture.bindAsImage(4, GL_WRITE_ONLY);
+	texture.bindAsImage(1, GL_WRITE_ONLY);
+	texture.setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 
-	for (int x = 0; x < WIDTH; ++x)
+	constexpr int radius = 15;
+	ofVec2f center = ofVec2f(WIDTH / 2, HEIGHT / 2);
+
+	agents.resize(NUM_AGENTS);
+	for (Agent& agent : agents)
 	{
-		for (int y = 0; y < HEIGHT; ++y)
-		{
-			int index = x + y * WIDTH;
-			A1cpu[index] = 1.0f;
-			A2cpu[index] = 1.0f;
+		const float dist = ofRandom(radius);
+		const float angle = ofRandom(359);
 
-			B1cpu[index] = (rand() / float(RAND_MAX) < 0.000021f) ? 1.0f : 0.0f;
-			B2cpu[index] = 0.0f;
-		}
+		const ofVec2f dir = ofVec2f(cos(angle), sin(angle));
+		const ofVec2f point = center + dir * dist;
+
+		agent.pos = point;
+		agent.angle = angle;
 	}
 
-	constexpr GLsizeiptr bytes = WIDTH * HEIGHT * sizeof(float);
-	A1.allocate(bytes, A1cpu, GL_STATIC_DRAW);
-	A2.allocate(bytes, A2cpu, GL_STATIC_DRAW);
-	B1.allocate(bytes, B1cpu, GL_STATIC_DRAW);
-	B2.allocate(bytes, B2cpu, GL_STATIC_DRAW);
+	agentsBuffer.allocate(agents, GL_DYNAMIC_DRAW);
 
-	A1.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
-	A2.bindBase(GL_SHADER_STORAGE_BUFFER, 1);
-	B1.bindBase(GL_SHADER_STORAGE_BUFFER, 2);
-	B2.bindBase(GL_SHADER_STORAGE_BUFFER, 3);
-
-	texture.setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
+	agentsBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
 }
 
 //--------------------------------------------------------------
 void ofApp::update()
 {
-	//binding (ping pong)
-	static int c = 1;
-	c = 1 - c;
-
-	A1.bindBase(GL_SHADER_STORAGE_BUFFER, 0 + c);
-	A2.bindBase(GL_SHADER_STORAGE_BUFFER, 1 - c);
-	B1.bindBase(GL_SHADER_STORAGE_BUFFER, 2 + c);
-	B2.bindBase(GL_SHADER_STORAGE_BUFFER, 2 + 1 - c);
-
 	shader.begin();
+	shader.setUniform1i("width", 100);
+	shader.setUniform1i("height", HEIGHT);
+	shader.setUniform1f("moveSpeed", 0.0f);
 	shader.dispatchCompute(WIDTH / 20, HEIGHT / 20, 1);
 	shader.end();
 }
@@ -56,7 +45,7 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-	texture.draw(0, 0);
+	texture.draw(0, 0, 600, 600);
 }
 
 //--------------------------------------------------------------
