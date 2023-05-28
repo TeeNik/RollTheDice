@@ -42,7 +42,7 @@ void main()
 
 	int idx = int(x) + int(y) * width;
 
-	vec4 trailVal = vec4(trailMap[idx]);
+	vec4 trailVal = vec4(trailMap[idx].value);
 	
 	vec4 backColor = vec4(0,0,0,1);
 	vec4 trailColor = vec4(1,1,0,1);

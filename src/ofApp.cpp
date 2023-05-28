@@ -12,7 +12,7 @@ void ofApp::setup()
 	texture.bindAsImage(2, GL_WRITE_ONLY);
 	texture.setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 
-	constexpr int radius = 15;
+	constexpr int radius = 200;
 	ofVec2f center = ofVec2f(WIDTH / 2, HEIGHT / 2);
 
 	cells.resize(NUM_CELL);

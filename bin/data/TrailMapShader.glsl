@@ -46,13 +46,12 @@ void main()
 	vec2 dir = vec2(cos(cell.angle), sin(cell.angle));
 	vec2 newPos = cell.position + dir * moveSpeed * deltaTime;
 
-	cells[idx].position = newPos;
-	//trailMap[newPos.x + newPos.y * width].value = 1.0f;
-	trailMap[idx].value = vec4(1.0f);
+	//cells[idx].position = newPos;
+	int posIdx = int(cell.position.x) + int(cell.position.y) * width;
+	trailMap[posIdx].value = vec4(0.5f);
+	//trailMap[idx].value = vec4(0.5f);
 
 	//vec4 col = vec4(i / float(width), j / float(height), 0, 1);
     //imageStore(trailMap, ivec2(gl_GlobalInvocationID.xy), col);
-
-
-    imageStore(texture, ivec2(i, j), vec4(i / float(width), j / float(height), 0, 1));
+    //imageStore(texture, ivec2(i, j), vec4(i / float(width), j / float(height), 0, 1));
 }
