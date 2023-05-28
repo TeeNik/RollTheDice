@@ -24,5 +24,7 @@
   <ItemGroup>
     <None Include="bin\data\computeshader.glsl" />
     <None Include="bin\data\TrailMapShader.glsl" />
+    <None Include="bin\data\shader.frag" />
+    <None Include="bin\data\shader.vert" />
   </ItemGroup>
 </Project>

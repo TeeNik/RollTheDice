@@ -3,18 +3,20 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
-	shader.setupShaderFromFile(GL_COMPUTE_SHADER, "TrailMapShader.glsl");
-	shader.linkProgram();
+	fragShader.load("shader");
 
-	texture.allocate(WIDTH, HEIGHT, GL_RGBA8);
-	texture.bindAsImage(1, GL_WRITE_ONLY);
-	texture.setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
+	trailMapShader.setupShaderFromFile(GL_COMPUTE_SHADER, "TrailMapShader.glsl");
+	trailMapShader.linkProgram();
+
+	//texture.allocate(WIDTH, HEIGHT, GL_RGBA8);
+	//texture.bindAsImage(1, GL_WRITE_ONLY);
+	//texture.setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 
 	constexpr int radius = 15;
 	ofVec2f center = ofVec2f(WIDTH / 2, HEIGHT / 2);
 
-	agents.resize(NUM_AGENTS);
-	for (Agent& agent : agents)
+	cells.resize(NUM_CELL);
+	for (Cell& agent : cells)
 	{
 		const float dist = ofRandom(radius);
 		const float angle = ofRandom(359);
@@ -26,7 +28,7 @@ void ofApp::setup()
 		agent.angle = angle;
 	}
 
-	agentsBuffer.allocate(agents, GL_DYNAMIC_DRAW);
+	agentsBuffer.allocate(cells, GL_DYNAMIC_DRAW);
 
 	agentsBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
 }
@@ -34,18 +36,26 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::update()
 {
-	shader.begin();
-	shader.setUniform1i("width", 100);
-	shader.setUniform1i("height", HEIGHT);
-	shader.setUniform1f("moveSpeed", 0.0f);
-	shader.dispatchCompute(WIDTH / 20, HEIGHT / 20, 1);
-	shader.end();
+	trailMapShader.begin();
+	trailMapShader.setUniform1i("width", 100);
+	trailMapShader.setUniform1i("height", HEIGHT);
+	trailMapShader.setUniform1f("moveSpeed", 0.0f);
+	trailMapShader.dispatchCompute(WIDTH / 20, HEIGHT / 20, 1);
+	trailMapShader.end();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-	texture.draw(0, 0, 600, 600);
+	fragShader.begin();
+	fragShader.setUniform1i("width", WIDTH);
+	fragShader.setUniform1i("height", HEIGHT);
+	fragShader.setUniform1f("xRatio", 1.0f);
+	fragShader.setUniform1f("yRatio", 1.0f);
+	ofDrawRectangle(0, 0, WIDTH, HEIGHT);
+	fragShader.end();
+
+	//texture.draw(0, 0, 600, 600);
 }
 
 //--------------------------------------------------------------

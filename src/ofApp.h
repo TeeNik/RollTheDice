@@ -6,11 +6,11 @@
 #define SCREEN_WIDTH 1080
 #define SCREEN_HEIGHT 720
 
-#define WIDTH 100
-#define HEIGHT 100
-#define NUM_AGENTS 100
+#define WIDTH 1080
+#define HEIGHT 720
+#define NUM_CELL 100
 
-struct Agent
+struct Cell
 {
 	ofVec2f pos;
 	float angle;
@@ -40,9 +40,10 @@ private:
 
 	ofBufferObject agentsBuffer;
 
-	std::vector<Agent> agents;
+	std::vector<Cell> cells;
 
 	ofTexture texture;
-	ofShader shader;
+	ofShader trailMapShader;
+	ofShader fragShader;
 	
 };

@@ -1,17 +1,17 @@
 #version 440
 
-struct Agent 
+struct Cell 
 {
 	vec2 position;
 	float angle;
 };
 
-struct Cell
+struct CellTrail
 {
 	vec4 value;
 };
 
-layout(binding = 0) buffer agentsBuffer { Agent agents[]; };
+layout(binding = 0) buffer cellsBuffer { Cell cells[]; };
 layout(rgba8, binding = 1) uniform writeonly image2D trailMap;
 layout(local_size_x = 20, local_size_y = 20, local_size_z = 1) in;
 
@@ -39,12 +39,12 @@ void main()
 
 	int idx = i + j * width;
 
-	Agent agent = agents[idx];
+	Cell cell = cells[idx];
 
-	vec2 dir = vec2(cos(agent.angle), sin(agent.angle));
-	vec2 newPos = agent.position + dir * moveSpeed * deltaTime;
+	vec2 dir = vec2(cos(cell.angle), sin(cell.angle));
+	vec2 newPos = cell.position + dir * moveSpeed * deltaTime;
 
-	agents[idx].position = newPos;
+	cells[idx].position = newPos;
 
 	//vec4 col = vec4(i / float(width), j / float(height), 0, 1);
     //imageStore(trailMap, ivec2(gl_GlobalInvocationID.xy), col);
