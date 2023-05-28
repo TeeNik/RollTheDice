@@ -6,13 +6,15 @@ struct Cell
 	float angle;
 };
 
-struct CellTrail
+struct Trail
 {
 	vec4 value;
 };
 
 layout(binding = 0) buffer cellsBuffer { Cell cells[]; };
-layout(rgba8, binding = 1) uniform writeonly image2D trailMap;
+layout(binding = 1) buffer trailMapBuffer { Trail trailMap[]; };
+layout(rgba8, binding = 2) uniform writeonly image2D texture;
+
 layout(local_size_x = 20, local_size_y = 20, local_size_z = 1) in;
 
 uniform int width;
@@ -45,10 +47,12 @@ void main()
 	vec2 newPos = cell.position + dir * moveSpeed * deltaTime;
 
 	cells[idx].position = newPos;
+	//trailMap[newPos.x + newPos.y * width].value = 1.0f;
+	trailMap[idx].value = vec4(1.0f);
 
 	//vec4 col = vec4(i / float(width), j / float(height), 0, 1);
     //imageStore(trailMap, ivec2(gl_GlobalInvocationID.xy), col);
 
 
-    imageStore(trailMap, ivec2(newPos), vec4(1));
+    imageStore(texture, ivec2(i, j), vec4(i / float(width), j / float(height), 0, 1));
 }

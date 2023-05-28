@@ -8,7 +8,7 @@
 
 #define WIDTH 1080
 #define HEIGHT 720
-#define NUM_CELL 100
+#define NUM_CELL 10000
 
 struct Cell
 {
@@ -16,6 +16,10 @@ struct Cell
 	float angle;
 };
 
+struct Trail
+{
+	ofVec4f value;
+};
 
 class ofApp : public ofBaseApp{
 
@@ -38,9 +42,11 @@ public:
 
 private:
 
-	ofBufferObject agentsBuffer;
+	ofBufferObject cellsBuffer;
+	ofBufferObject trailMapBuffer;
 
 	std::vector<Cell> cells;
+	std::vector<Trail> trailMap;
 
 	ofTexture texture;
 	ofShader trailMapShader;
