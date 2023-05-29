@@ -6,9 +6,10 @@
 #define SCREEN_WIDTH 1080
 #define SCREEN_HEIGHT 720
 
-#define WIDTH 1080
-#define HEIGHT 720
-#define NUM_CELL 10000
+#define WIDTH 20
+#define HEIGHT 20
+#define NUM_CELLS 20
+#define RADIUS 10
 
 struct Cell
 {

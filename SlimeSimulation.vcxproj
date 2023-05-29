@@ -200,8 +200,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\data\computeshader.glsl" />
-    <None Include="bin\data\shader.frag" />
-    <None Include="bin\data\shader.vert" />
+    <None Include="bin\data\RectShader\shader.frag" />
+    <None Include="bin\data\RectShader\shader.vert" />
+    <None Include="bin\data\TextureShader\shader.frag" />
+    <None Include="bin\data\TextureShader\shader.vert" />
     <None Include="bin\data\TrailMapShader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

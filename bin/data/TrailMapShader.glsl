@@ -21,6 +21,7 @@ uniform int width;
 uniform int height; 
 uniform float moveSpeed; 
 uniform float deltaTime; 
+uniform int numOfCells;
 
 uint hash(uint state) 
 {
@@ -48,10 +49,11 @@ void main()
 
 	//cells[idx].position = newPos;
 	int posIdx = int(cell.position.x) + int(cell.position.y) * width;
-	trailMap[posIdx].value = vec4(0.5f);
+	//trailMap[posIdx].value = vec4(0.5f);
 	//trailMap[idx].value = vec4(0.5f);
 
 	//vec4 col = vec4(i / float(width), j / float(height), 0, 1);
-    //imageStore(trailMap, ivec2(gl_GlobalInvocationID.xy), col);
-    //imageStore(texture, ivec2(i, j), vec4(i / float(width), j / float(height), 0, 1));
+	vec4 col = vec4(i / float(width), j / float(height), 0, 1);
+    //imageStore(texture, ivec2(i, j), col);
+    imageStore(texture, ivec2(i, j), trailMap[idx].value);
 }

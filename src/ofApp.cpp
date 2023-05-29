@@ -3,7 +3,7 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
-	fragShader.load("shader");
+	fragShader.load("RectShader/shader");
 
 	trailMapShader.setupShaderFromFile(GL_COMPUTE_SHADER, "TrailMapShader.glsl");
 	trailMapShader.linkProgram();
@@ -12,32 +12,40 @@ void ofApp::setup()
 	texture.bindAsImage(2, GL_WRITE_ONLY);
 	texture.setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 
-	constexpr int radius = 200;
-	ofVec2f center = ofVec2f(WIDTH / 2, HEIGHT / 2);
+	const ofVec2f center = ofVec2f(WIDTH / 2, HEIGHT / 2);
 
-	cells.resize(NUM_CELL);
-	for (Cell& agent : cells)
+	cells.resize(NUM_CELLS);
+
+	for (int i = 0; i < NUM_CELLS; ++i)
 	{
-		const float dist = ofRandom(radius);
-		const float angle = ofRandom(359);
-
-		const ofVec2f dir = ofVec2f(cos(angle), sin(angle));
-		const ofVec2f point = center + dir * dist;
-
-		agent.pos = point;
-		agent.angle = angle;
+		cells[i].pos = ofVec2f(i, i);
+		cells[i].angle = 0;
 	}
+
+	//for (Cell& agent : cells)
+	//{
+	//	const float dist = ofRandom(RADIUS);
+	//	const float angle = ofRandom(359);
+	//
+	//	const ofVec2f dir = ofVec2f(cos(angle), sin(angle));
+	//	const ofVec2f point = center + dir * dist;
+	//
+	//	agent.pos = point;
+	//	agent.angle = angle;
+	//}
 
 	cellsBuffer.allocate(cells, GL_DYNAMIC_DRAW);
 	cellsBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
 
 	trailMap.resize(WIDTH * HEIGHT);
-	//trailMap.resize(NUM_CELL);
-
-	//for (auto& trail : trailMap)
-	//{
-	//	trail.value.set(0.5f);
-	//}
+	for (int i = 0; i < WIDTH; ++i)
+	{
+		for (int j = 0; j < HEIGHT; ++j)
+		{
+			int id = i + j * WIDTH;
+			trailMap[id].value = (i == j) ? ofVec4f(1, 0, 0, 1) : ofVec4f(0,0,0,1);
+		}
+	}
 
 	trailMapBuffer.allocate(trailMap, GL_DYNAMIC_DRAW);
 	trailMapBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, 1);
@@ -49,6 +57,7 @@ void ofApp::update()
 	trailMapShader.begin();
 	trailMapShader.setUniform1i("width", WIDTH);
 	trailMapShader.setUniform1i("height", HEIGHT);
+	trailMapShader.setUniform1i("numOfCells", NUM_CELLS);
 	trailMapShader.setUniform1f("moveSpeed", 1.0f);
 	trailMapShader.dispatchCompute(WIDTH / 20, HEIGHT / 20, 1);
 	trailMapShader.end();
@@ -57,17 +66,16 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-	fragShader.begin();
-	fragShader.setUniform1i("width", WIDTH);
-	fragShader.setUniform1i("height", HEIGHT);
-	fragShader.setUniform1i("cellSize", 60);
-	fragShader.setUniform1f("xRatio", 1.0f);
-	fragShader.setUniform1f("yRatio", 1.0f);
-	
-	ofDrawRectangle(0, 0, WIDTH, HEIGHT);
-	fragShader.end();
+	//fragShader.begin();
+	//fragShader.setUniform1i("width", WIDTH);
+	//fragShader.setUniform1i("height", HEIGHT);
+	//fragShader.setUniform1i("cellSize", 60);
+	//fragShader.setUniform1f("xRatio", 1.0f);
+	//fragShader.setUniform1f("yRatio", 1.0f);
+	//ofDrawRectangle(0, 0, WIDTH, HEIGHT);
+	//fragShader.end();
 
-	//texture.draw(0, 0, 600, 600);
+	texture.draw(0, 0, 600, 600);
 }
 
 //--------------------------------------------------------------
