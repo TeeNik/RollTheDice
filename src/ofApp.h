@@ -13,13 +13,14 @@
 
 struct Cell
 {
-	ofVec2f pos;
-	float angle;
+	glm::vec2 pos;
+	glm::vec2 vel;
+	//float angle;
 };
 
 struct Trail
 {
-	ofVec4f value;
+	ofVec4f value {0,0,0,1};
 };
 
 class ofApp : public ofBaseApp{

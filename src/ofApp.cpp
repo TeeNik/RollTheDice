@@ -18,8 +18,9 @@ void ofApp::setup()
 
 	for (int i = 0; i < NUM_CELLS; ++i)
 	{
-		cells[i].pos = ofVec2f(i, i);
-		cells[i].angle = 0;
+		cells[i].pos = glm::vec4(i, i, 0, 0);
+		cells[i].vel = glm::vec4(1, 0, 1, 1);
+		//cells[i].angle = 10;
 	}
 
 	//for (Cell& agent : cells)
