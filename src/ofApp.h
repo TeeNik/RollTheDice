@@ -6,10 +6,10 @@
 #define SCREEN_WIDTH 1080
 #define SCREEN_HEIGHT 720
 
-#define WIDTH 20
-#define HEIGHT 20
+#define WIDTH 160
+#define HEIGHT 90
 #define NUM_CELLS 20
-#define RADIUS 10
+#define RADIUS 2
 
 struct Cell
 {
@@ -53,5 +53,6 @@ private:
 	ofTexture texture;
 	ofShader trailMapShader;
 	ofShader fragShader;
+	ofShader drawShader;
 	
 };

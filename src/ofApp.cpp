@@ -3,7 +3,12 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
+	ofSetFrameRate(60);
+
 	fragShader.load("RectShader/shader");
+
+	drawShader.setupShaderFromFile(GL_COMPUTE_SHADER, "DrawShader.glsl");
+	drawShader.linkProgram();
 
 	trailMapShader.setupShaderFromFile(GL_COMPUTE_SHADER, "TrailMapShader.glsl");
 	trailMapShader.linkProgram();
@@ -16,24 +21,18 @@ void ofApp::setup()
 
 	cells.resize(NUM_CELLS);
 
-	for (int i = 0; i < NUM_CELLS; ++i)
+	for (Cell& agent : cells)
 	{
-		cells[i].pos = glm::vec4(i, i, 0, 0);
-		cells[i].vel = glm::vec4(1, 0, 1, 1);
-		//cells[i].angle = 10;
+		const float dist = ofRandom(RADIUS);
+		const float angle = ofRandom(359);
+	
+		const glm::vec2 dir = glm::vec2(cos(angle), sin(angle));
+		const glm::vec2 point = center + dir * dist;
+		std::cout << point.x << "  " << point.y << std::endl;
+	
+		agent.pos = point;
+		agent.vel = glm::vec2(angle, 0.0f);
 	}
-
-	//for (Cell& agent : cells)
-	//{
-	//	const float dist = ofRandom(RADIUS);
-	//	const float angle = ofRandom(359);
-	//
-	//	const ofVec2f dir = ofVec2f(cos(angle), sin(angle));
-	//	const ofVec2f point = center + dir * dist;
-	//
-	//	agent.pos = point;
-	//	agent.angle = angle;
-	//}
 
 	cellsBuffer.allocate(cells, GL_DYNAMIC_DRAW);
 	cellsBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
@@ -44,7 +43,7 @@ void ofApp::setup()
 		for (int j = 0; j < HEIGHT; ++j)
 		{
 			int id = i + j * WIDTH;
-			trailMap[id].value = (i == j) ? ofVec4f(1, 0, 0, 1) : ofVec4f(0,0,0,1);
+			trailMap[id].value = ofVec4f(0,0,0,1);
 		}
 	}
 
@@ -59,9 +58,16 @@ void ofApp::update()
 	trailMapShader.setUniform1i("width", WIDTH);
 	trailMapShader.setUniform1i("height", HEIGHT);
 	trailMapShader.setUniform1i("numOfCells", NUM_CELLS);
-	trailMapShader.setUniform1f("moveSpeed", 1.0f);
-	trailMapShader.dispatchCompute(WIDTH / 20, HEIGHT / 20, 1);
+	trailMapShader.setUniform1f("moveSpeed", 20.0f);
+	trailMapShader.setUniform1f("deltaTime", ofGetLastFrameTime());
+	trailMapShader.dispatchCompute(WIDTH / 10, HEIGHT / 10, 1);
 	trailMapShader.end();
+
+	drawShader.begin();
+	drawShader.setUniform1i("width", WIDTH);
+	drawShader.setUniform1i("height", HEIGHT);
+	drawShader.dispatchCompute(WIDTH / 10, HEIGHT / 10, 1);
+	drawShader.end();
 }
 
 //--------------------------------------------------------------
@@ -76,7 +82,7 @@ void ofApp::draw()
 	//ofDrawRectangle(0, 0, WIDTH, HEIGHT);
 	//fragShader.end();
 
-	texture.draw(0, 0, 600, 600);
+	texture.draw(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 //--------------------------------------------------------------
