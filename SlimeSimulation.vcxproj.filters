@@ -28,5 +28,6 @@
     <None Include="bin\data\RectShader\shader.vert" />
     <None Include="bin\data\TextureShader\shader.frag" />
     <None Include="bin\data\TextureShader\shader.vert" />
+    <None Include="bin\data\DrawShader.glsl" />
   </ItemGroup>
 </Project>
