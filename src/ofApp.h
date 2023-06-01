@@ -3,11 +3,11 @@
 #include "ofMain.h"
 
 
-#define SCREEN_WIDTH 1080
+#define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
-#define WIDTH 160
-#define HEIGHT 90
+#define WIDTH 285
+#define HEIGHT 160
 #define NUM_CELLS 20
 #define RADIUS 2
 

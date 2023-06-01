@@ -59,8 +59,8 @@ void main()
 
 	if (newPos.x < 0 || newPos.x >= width || newPos.y < 0 || newPos.y >= height)
 	{
-		newPos.x = min(width - 0.01, max(0, newPos.x));
-		newPos.y = min(height - 0.01, max(0, newPos.y));
+		newPos.x = min(width - 1, max(0, newPos.x));
+		newPos.y = min(height - 1, max(0, newPos.y));
 
 		uint rand = hash(int(cell.pos.y) * width + int(cell.pos.x) + hash(i));
 		cells[idx].vel.x = scaleToRange01(rand) * 2 * PI;
