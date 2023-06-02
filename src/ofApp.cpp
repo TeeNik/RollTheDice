@@ -10,6 +10,9 @@ void ofApp::setup()
 	drawShader.setupShaderFromFile(GL_COMPUTE_SHADER, "DrawShader.glsl");
 	drawShader.linkProgram();
 
+	cellsShader.setupShaderFromFile(GL_COMPUTE_SHADER, "CellsShader.glsl");
+	cellsShader.linkProgram();
+
 	trailMapShader.setupShaderFromFile(GL_COMPUTE_SHADER, "TrailMapShader.glsl");
 	trailMapShader.linkProgram();
 
@@ -57,11 +60,20 @@ void ofApp::update()
 	trailMapShader.begin();
 	trailMapShader.setUniform1i("width", WIDTH);
 	trailMapShader.setUniform1i("height", HEIGHT);
-	trailMapShader.setUniform1i("numOfCells", NUM_CELLS);
-	trailMapShader.setUniform1f("moveSpeed", 20.0f);
+	trailMapShader.setUniform1f("evaporateSpeed", 0.3f);
 	trailMapShader.setUniform1f("deltaTime", ofGetLastFrameTime());
 	trailMapShader.dispatchCompute(WIDTH / 10, HEIGHT / 10, 1);
 	trailMapShader.end();
+
+	cellsShader.begin();
+	cellsShader.setUniform1i("width", WIDTH);
+	cellsShader.setUniform1i("height", HEIGHT);
+	cellsShader.setUniform1i("numOfCells", NUM_CELLS);
+	cellsShader.setUniform1f("moveSpeed", 40.0f);
+	cellsShader.setUniform1f("time", ofGetElapsedTimef());
+	cellsShader.setUniform1f("deltaTime", ofGetLastFrameTime());
+	cellsShader.dispatchCompute(WIDTH / 10, HEIGHT / 10, 1);
+	cellsShader.end();
 
 	drawShader.begin();
 	drawShader.setUniform1i("width", WIDTH);

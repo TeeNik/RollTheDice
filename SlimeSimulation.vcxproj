@@ -199,6 +199,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="bin\data\CellsShader.glsl" />
     <None Include="bin\data\computeshader.glsl" />
     <None Include="bin\data\DrawShader.glsl" />
     <None Include="bin\data\RectShader\shader.frag" />
