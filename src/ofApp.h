@@ -8,8 +8,8 @@
 
 #define WIDTH 285
 #define HEIGHT 160
-#define NUM_CELLS 20
-#define RADIUS 2
+#define NUM_CELLS 50
+#define RADIUS 3
 
 struct Cell
 {
@@ -51,8 +51,11 @@ private:
 	std::vector<Trail> trailMap;
 
 	ofTexture texture;
+	ofShader cellsShader;
 	ofShader trailMapShader;
-	ofShader fragShader;
 	ofShader drawShader;
-	
+
+
+	ofShader fragShader;
+
 };
