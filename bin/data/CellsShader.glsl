@@ -26,15 +26,16 @@ uniform float time;
 
 const float PI = 3.1415;
 
-uint hash(uint state) 
+float hash(uint n) 
 {
-	state ^= 2747636419u;
-	state *= 2654435769u;
-	state ^= state >> 16;
-	state *= 2654435769u;
-	state ^= state >> 16;
-	state *= 2654435769u;
-	return state;
+	n = (n << 13U) ^ n;
+    n = n * (n * n * 15731U + 789221U) + 1376312589U;
+    return float( n & uint(0x7fffffffU))/float(0x7fffffff);
+}
+
+float hash(int n)
+{
+	return hash(uint(n));
 }
 
 float scaleToRange01(uint state)
@@ -50,26 +51,36 @@ void main()
 
 	int idx = i + j * width;
 
-	if (idx >= numOfCells) return;
-	
-	Cell cell = cells[idx];
-	float angle = cell.vel.x;
+	float rand = hash(idx);
+	trailMap[idx].value = vec4(rand, rand, rand, 1);
+	return;
 
-	vec2 dir = vec2(cos(angle), sin(angle));
-	vec2 newPos = cell.pos.xy + dir * moveSpeed * deltaTime;
-
-	if (newPos.x < 0 || newPos.x >= width || newPos.y < 0 || newPos.y >= height)
-	{
-		newPos.x = min(width - 1, max(0, newPos.x));
-		newPos.y = min(height - 1, max(0, newPos.y));
-
-		uint rand = hash(int(cell.pos.y) * width + int(cell.pos.x) + hash(i) + int(time));
-		cells[idx].vel.x = scaleToRange01(rand) * 2 * PI;
-		//cells[idx].vel.x += 90.0f;
-	}
-
-	cells[idx].pos = newPos;
-
-	int posIdx = int(newPos.x) + int(newPos .y) * width;
-	trailMap[posIdx].value = vec4(1.0f);
+	//if (idx >= numOfCells) return;
+	//
+	//Cell cell = cells[idx];
+	//float angle = cell.vel.x;
+	//
+	//vec2 dir = vec2(cos(angle), sin(angle));
+	//vec2 newPos = cell.pos.xy + dir * moveSpeed * deltaTime;
+	//
+	//if (newPos.x < 0 || newPos.x >= width || newPos.y < 0 || newPos.y >= height)
+	//{
+	//	newPos.x = min(width - 1, max(0, newPos.x));
+	//	newPos.y = min(height - 1, max(0, newPos.y));
+	//
+	//	uint g = int(cell.pos.y) * width + int(cell.pos.x) + int(time);
+	//	float rand = hash(g);
+	//	//float rand = hash(i);
+	//	
+	//	//float randClampted = scaleToRange01(rand);
+	//	//flaot newAngle = 
+	//	
+	//	cells[idx].vel.x = rand * 2 * PI;
+	//	//cells[idx].vel.x += 90.0f;
+	//}
+	//
+	//cells[idx].pos = newPos;
+	//
+	//int posIdx = int(newPos.x) + int(newPos .y) * width;
+	//trailMap[posIdx].value = vec4(1.0f);
 }

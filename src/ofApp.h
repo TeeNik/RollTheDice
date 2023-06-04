@@ -6,8 +6,8 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
-#define WIDTH 285
-#define HEIGHT 160
+#define WIDTH 1280
+#define HEIGHT 720
 #define NUM_CELLS 50
 #define RADIUS 3
 
