@@ -4,6 +4,7 @@
 void ofApp::setup()
 {
 	ofSetFrameRate(60);
+	ofBackground(ofColor::black);
 
 	fragShader.load("RectShader/shader");
 
@@ -60,9 +61,10 @@ void ofApp::update()
 	trailMapShader.begin();
 	trailMapShader.setUniform1i("width", WIDTH);
 	trailMapShader.setUniform1i("height", HEIGHT);
-	trailMapShader.setUniform1f("evaporateSpeed", 0.3f);
+	trailMapShader.setUniform1f("evaporateSpeed", 0.05f);
+	trailMapShader.setUniform1f("diffuseSpeed", 5.f);
 	trailMapShader.setUniform1f("deltaTime", ofGetLastFrameTime());
-	trailMapShader.dispatchCompute(WIDTH / 10, HEIGHT / 10, 1);
+	trailMapShader.dispatchCompute(WIDTH / 1, HEIGHT / 1, 1);
 	trailMapShader.end();
 
 	cellsShader.begin();
@@ -72,13 +74,13 @@ void ofApp::update()
 	cellsShader.setUniform1f("moveSpeed", 40.0f);
 	cellsShader.setUniform1f("time", ofGetElapsedTimef());
 	cellsShader.setUniform1f("deltaTime", ofGetLastFrameTime());
-	cellsShader.dispatchCompute(WIDTH / 10, HEIGHT / 10, 1);
+	cellsShader.dispatchCompute(WIDTH / 1, HEIGHT / 1, 1);
 	cellsShader.end();
 
 	drawShader.begin();
 	drawShader.setUniform1i("width", WIDTH);
 	drawShader.setUniform1i("height", HEIGHT);
-	drawShader.dispatchCompute(WIDTH / 10, HEIGHT / 10, 1);
+	drawShader.dispatchCompute(WIDTH / 1, HEIGHT / 1, 1);
 	drawShader.end();
 }
 

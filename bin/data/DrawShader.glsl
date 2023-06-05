@@ -7,7 +7,7 @@ struct Trail
 
 layout(std140, binding = 1) buffer trailMapBuffer { Trail trailMap[]; };
 layout(rgba8, binding = 2) uniform writeonly image2D texture;
-layout(local_size_x = 10, local_size_y = 10, local_size_z = 1) in;
+layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
 
 uniform int width;
 uniform int height; 

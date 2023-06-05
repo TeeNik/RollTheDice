@@ -6,11 +6,12 @@ struct Trail
 };
 
 layout(std140, binding = 1) buffer trailMapBuffer { Trail trailMap[]; };
-layout(local_size_x = 10, local_size_y = 10, local_size_z = 1) in;
+layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
 
 uniform int width;
 uniform int height; 
 uniform float evaporateSpeed; 
+uniform float diffuseSpeed; 
 uniform float deltaTime; 
 
 void main()
@@ -22,8 +23,28 @@ void main()
 	int idx = i + j * width;
 
 	vec4 currValue = trailMap[idx].value;
+
+	vec4 sum = vec4(0.0f);
+	for (int offsetX = -1; offsetX <= 1; ++offsetX)
+	{
+		for (int offsetY = -1; offsetY <= 1; ++offsetY)
+		{
+			int x = i + offsetX;
+			int y = j + offsetY;
+			if (x >= 0 && x < width && y >= 0 && y < height)
+			{
+				sum += trailMap[x + y * width].value;
+			}
+		}
+	}
+	vec4 blur = vec4(sum / 9);
+	vec4 diffusedValue = mix(currValue, blur, diffuseSpeed * deltaTime);
+
+	vec4 evaporatedValue = max(vec4(0.0f), diffusedValue - evaporateSpeed * deltaTime);
+
 	float evaporatedAmount = evaporateSpeed * deltaTime;
 	vec4 delta = vec4(evaporatedAmount, evaporatedAmount, evaporatedAmount, 1);
-	vec4 newValue = max(vec4(0,0,0,1), currValue - delta);
-	trailMap[idx].value = newValue;
+	vec4 newValue = max(vec4(0,0,0,1), currValue - evaporatedValue);
+
+	trailMap[idx].value = evaporatedValue;
 }
