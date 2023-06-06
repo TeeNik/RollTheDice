@@ -64,7 +64,7 @@ void ofApp::update()
 	trailMapShader.setUniform1f("evaporateSpeed", 0.05f);
 	trailMapShader.setUniform1f("diffuseSpeed", 5.f);
 	trailMapShader.setUniform1f("deltaTime", ofGetLastFrameTime());
-	trailMapShader.dispatchCompute(WIDTH / 1, HEIGHT / 1, 1);
+	trailMapShader.dispatchCompute((WIDTH * HEIGHT + 1024 - 1) / 1024, 1, 1);
 	trailMapShader.end();
 
 	cellsShader.begin();
@@ -74,7 +74,7 @@ void ofApp::update()
 	cellsShader.setUniform1f("moveSpeed", 40.0f);
 	cellsShader.setUniform1f("time", ofGetElapsedTimef());
 	cellsShader.setUniform1f("deltaTime", ofGetLastFrameTime());
-	cellsShader.dispatchCompute(WIDTH / 1, HEIGHT / 1, 1);
+	cellsShader.dispatchCompute((cells.size() + 1024 - 1) / 1024, 1, 1);
 	cellsShader.end();
 
 	drawShader.begin();

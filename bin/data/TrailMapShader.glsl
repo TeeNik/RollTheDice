@@ -6,7 +6,7 @@ struct Trail
 };
 
 layout(std140, binding = 1) buffer trailMapBuffer { Trail trailMap[]; };
-layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
+layout(local_size_x = 1024, local_size_y = 1, local_size_z = 1) in;
 
 uniform int width;
 uniform int height; 
@@ -16,9 +16,8 @@ uniform float deltaTime;
 
 void main()
 {
-	int i, j;
-	i = int(gl_GlobalInvocationID.x);
-	j = int(gl_GlobalInvocationID.y);
+	int j = int(gl_GlobalInvocationID.x) / width;
+	int i = int(gl_GlobalInvocationID.x) - j * width;
 
 	int idx = i + j * width;
 
