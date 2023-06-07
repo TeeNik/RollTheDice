@@ -38,12 +38,6 @@ void main()
 	}
 	vec4 blur = vec4(sum / 9);
 	vec4 diffusedValue = mix(currValue, blur, diffuseSpeed * deltaTime);
-
 	vec4 evaporatedValue = max(vec4(0.0f), diffusedValue - evaporateSpeed * deltaTime);
-
-	float evaporatedAmount = evaporateSpeed * deltaTime;
-	vec4 delta = vec4(evaporatedAmount, evaporatedAmount, evaporatedAmount, 1);
-	vec4 newValue = max(vec4(0,0,0,1), currValue - evaporatedValue);
-
 	trailMap[idx].value = evaporatedValue;
 }

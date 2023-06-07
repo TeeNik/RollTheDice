@@ -24,6 +24,12 @@ uniform float deltaTime;
 uniform int numOfCells;
 uniform float time;
 
+uniform float sensorDistance;
+uniform int sensorSize;
+uniform float senseAngle;
+uniform float senseWeight;
+uniform float turnSpeed;
+
 const float PI = 3.1415;
 
 float hash(uint n) 
@@ -35,7 +41,26 @@ float hash(uint n)
 
 float sense(Cell cell, float angleOffset)
 {
-	return 0.0f;
+	//float angle = mod(cell.vel.x + angleOffset + 360.0f, 360.0f);
+	float angle = cell.vel.x + angleOffset;
+	vec2 dir = vec2(cos(angle), sin(angle));
+	vec2 sensePos = cell.pos + dir * sensorDistance;
+
+	float sum = 0.0f;
+	for (int offsetX = -sensorSize; offsetX <= sensorSize; ++offsetX)
+	{
+		for (int offsetY = -sensorSize; offsetY <= sensorSize; ++offsetY)
+		{
+			int x = int(sensePos.x) + offsetX;
+			int y = int(sensePos.y) + offsetY;
+			if (x >= 0 && x < width && y >= 0 && y < height)
+			{
+				sum += dot(senseWeight, trailMap[x + y * width].value.x);
+			}
+		}
+	}
+
+	return sum;
 }
 
 void main()
@@ -47,10 +72,36 @@ void main()
 	//int idx = i + j * width;
 	int idx = i;
 
-	if (idx >= numOfCells) return;
-	
 	Cell cell = cells[idx];
 	float angle = cell.vel.x;
+
+	//sense
+	float forward = sense(cell, 0.0f);
+	float left = sense(cell, -senseAngle);
+	float right = sense(cell, senseAngle);
+	
+	//float rand = hash(uint(cell.pos.x + cell.pos.y * width));
+	float rand = 1.0;
+	
+	if (forward > left && forward > right)
+	{
+		angle += 0;
+	}
+	else if (forward < left && forward < right)
+	{
+		angle = mod(angle + (rand - 0.5) * 2 * turnSpeed * deltaTime + 360.0f, 360.0f);
+		//angle += (rand - 0.5) * 2 * turnSpeed * deltaTime;
+	}
+	else if (left > right)
+	{
+		angle = mod(angle - (rand * turnSpeed * deltaTime + 360.0f), 360.0f);
+		//angle -= rand * turnSpeed * deltaTime;
+	}
+	else if (right > left)
+	{
+		angle = mod(angle + (rand * turnSpeed * deltaTime + 360.0f), 360.0f);
+		//angle += rand * turnSpeed * deltaTime;
+	}
 
 	vec2 dir = vec2(cos(angle), sin(angle));
 	vec2 newPos = cell.pos.xy + dir * moveSpeed * deltaTime;
@@ -59,12 +110,13 @@ void main()
 	{
 		newPos.x = min(width - 1, max(0, cell.pos.x));
 		newPos.y = min(height - 1, max(0, cell.pos.y));
-		cells[idx].vel.x = mod(angle + 60, 360.0f);
+		angle = mod(angle + 60, 360.0f);
 		//float rand = hash(int(cell.pos.y) * width + int(cell.pos.x) + int(idx * hash(idx)));
 		//cells[idx].vel.x = rand * 2.0f * PI;
 	}
 
 	cells[idx].pos = newPos;
+	cells[idx].vel.x = angle;
 
 	int posIdx = int(newPos.x) + int(newPos .y) * width;
 	trailMap[posIdx].value = vec4(1.0f);

@@ -32,7 +32,6 @@ void ofApp::setup()
 	
 		const glm::vec2 dir = glm::vec2(cos(angle), sin(angle));
 		const glm::vec2 point = center + dir * dist;
-		std::cout << point.x << "  " << point.y << std::endl;
 	
 		agent.pos = point;
 		agent.vel = glm::vec2(angle, 0.0f);
@@ -61,8 +60,8 @@ void ofApp::update()
 	trailMapShader.begin();
 	trailMapShader.setUniform1i("width", WIDTH);
 	trailMapShader.setUniform1i("height", HEIGHT);
-	trailMapShader.setUniform1f("evaporateSpeed", 0.05f);
-	trailMapShader.setUniform1f("diffuseSpeed", 5.f);
+	trailMapShader.setUniform1f("evaporateSpeed", 0.25f);
+	trailMapShader.setUniform1f("diffuseSpeed", 10.f);
 	trailMapShader.setUniform1f("deltaTime", ofGetLastFrameTime());
 	trailMapShader.dispatchCompute((WIDTH * HEIGHT + 1024 - 1) / 1024, 1, 1);
 	trailMapShader.end();
@@ -71,9 +70,15 @@ void ofApp::update()
 	cellsShader.setUniform1i("width", WIDTH);
 	cellsShader.setUniform1i("height", HEIGHT);
 	cellsShader.setUniform1i("numOfCells", NUM_CELLS);
-	cellsShader.setUniform1f("moveSpeed", 40.0f);
+	cellsShader.setUniform1f("moveSpeed", 80.0f);
 	cellsShader.setUniform1f("time", ofGetElapsedTimef());
 	cellsShader.setUniform1f("deltaTime", ofGetLastFrameTime());
+
+	cellsShader.setUniform1f("sensorDistance", 20.0f);
+	cellsShader.setUniform1f("senseAngle", 0.4f);
+	cellsShader.setUniform1f("turnSpeed", 30.6f);
+	cellsShader.setUniform1f("senseWeight", 3.0f);
+	cellsShader.setUniform1i("sensorSize", 1);
 	cellsShader.dispatchCompute((cells.size() + 1024 - 1) / 1024, 1, 1);
 	cellsShader.end();
 
