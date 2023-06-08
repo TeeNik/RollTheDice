@@ -6,8 +6,32 @@ void ofApp::setup()
 	ofSetFrameRate(60);
 	ofBackground(ofColor::black);
 
-	fragShader.load("RectShader/shader");
+	setupCells();
+	setupShaders();
+}
 
+void ofApp::setupCells()
+{
+	const ofVec2f center = ofVec2f(WIDTH / 2, HEIGHT / 2);
+	cells.resize(NUM_CELLS);
+	for (Cell& agent : cells)
+	{
+		const float dist = ofRandom(RADIUS);
+		const float angle = ofRandom(359);
+
+		const glm::vec2 dir = glm::vec2(cos(angle), sin(angle));
+		const glm::vec2 point = center + dir * dist;
+
+		agent.pos = point;
+		agent.vel = glm::vec2(angle, 0.0f);
+	}
+
+	trailMap.resize(WIDTH * HEIGHT);
+}
+
+void ofApp::setupShaders()
+{
+	fragShader.load("RectShader/shader");
 	drawShader.setupShaderFromFile(GL_COMPUTE_SHADER, "DrawShader.glsl");
 	drawShader.linkProgram();
 
@@ -21,34 +45,8 @@ void ofApp::setup()
 	texture.bindAsImage(2, GL_WRITE_ONLY);
 	texture.setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 
-	const ofVec2f center = ofVec2f(WIDTH / 2, HEIGHT / 2);
-
-	cells.resize(NUM_CELLS);
-
-	for (Cell& agent : cells)
-	{
-		const float dist = ofRandom(RADIUS);
-		const float angle = ofRandom(359);
-	
-		const glm::vec2 dir = glm::vec2(cos(angle), sin(angle));
-		const glm::vec2 point = center + dir * dist;
-	
-		agent.pos = point;
-		agent.vel = glm::vec2(angle, 0.0f);
-	}
-
 	cellsBuffer.allocate(cells, GL_DYNAMIC_DRAW);
 	cellsBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
-
-	trailMap.resize(WIDTH * HEIGHT);
-	for (int i = 0; i < WIDTH; ++i)
-	{
-		for (int j = 0; j < HEIGHT; ++j)
-		{
-			int id = i + j * WIDTH;
-			trailMap[id].value = ofVec4f(0,0,0,1);
-		}
-	}
 
 	trailMapBuffer.allocate(trailMap, GL_DYNAMIC_DRAW);
 	trailMapBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, 1);
@@ -101,7 +99,7 @@ void ofApp::draw()
 	//ofDrawRectangle(0, 0, WIDTH, HEIGHT);
 	//fragShader.end();
 
-	texture.draw(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	texture.draw(0, 0, TEXTURE_WIDTH, TEXTURE_HEIGHT);
 }
 
 //--------------------------------------------------------------
