@@ -24,7 +24,7 @@ uniform float deltaTime;
 uniform int numOfCells;
 uniform float time;
 
-uniform float sensorDistance;
+uniform float senseDistance;
 uniform int sensorSize;
 uniform float senseAngle;
 uniform float senseWeight;
@@ -44,7 +44,7 @@ float sense(Cell cell, float angleOffset)
 	//float angle = mod(cell.vel.x + angleOffset + 360.0f, 360.0f);
 	float angle = cell.vel.x + angleOffset;
 	vec2 dir = vec2(cos(angle), sin(angle));
-	vec2 sensePos = cell.pos + dir * sensorDistance;
+	vec2 sensePos = cell.pos + dir * senseDistance;
 
 	float sum = 0.0f;
 	for (int offsetX = -sensorSize; offsetX <= sensorSize; ++offsetX)

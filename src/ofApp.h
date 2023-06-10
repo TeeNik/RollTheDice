@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxGui/src/ofxGui.h"
+#include "ofxGui.h"
 
 #define TEXTURE_WIDTH 1280
 #define TEXTURE_HEIGHT 720
@@ -28,6 +28,20 @@ struct Trail
 	ofVec4f value {0,0,0,1};
 };
 
+struct SimSettings
+{
+	float MoveSpeed = 80.0f;
+	float TurnSpeed = 30.0f;
+
+	float SenseDistance = 20.0f;
+	float SenseWeight = 3.0f;
+	float SenseAngle = 0.4f;
+	int SensorSize = 1;
+
+	float EvaporateSpeed = 0.25f;
+	float DiffuseSpeed = 10.0f;
+};
+
 class ofApp : public ofBaseApp{
 
 public:
@@ -52,6 +66,8 @@ private:
 	void setupShaders();
 	void setupGui();
 
+	void updateSettings();
+
 	ofBufferObject cellsBuffer;
 	ofBufferObject trailMapBuffer;
 
@@ -63,5 +79,19 @@ private:
 	ofShader trailMapShader;
 	ofShader drawShader;
 	ofShader fragShader;
+
+	ofxPanel gui;
+	ofxFloatSlider speedSlider;
+	ofxFloatSlider turnSpeedSlider;
+	ofxFloatSlider senseDistanceSlider;
+	ofxFloatSlider senseWeightSlider;
+	ofxFloatSlider senseAngleSlider;
+	ofxIntSlider sensorSizeSlider;
+	ofxFloatSlider evaporationSpeedSlider;
+	ofxFloatSlider diffuseSpeedSlider;
+	ofxColorSlider colorSlider;
+	ofColor color;
+
+	SimSettings simSettings;
 
 };

@@ -8,6 +8,7 @@ void ofApp::setup()
 
 	setupCells();
 	setupShaders();
+	setupGui();
 }
 
 void ofApp::setupCells()
@@ -52,14 +53,53 @@ void ofApp::setupShaders()
 	trailMapBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, 1);
 }
 
+void ofApp::setupGui()
+{
+	gui.setup();
+	// Setup parameter sliders
+	gui.add(speedSlider.setup("Speed", simSettings.MoveSpeed, 0, 100));
+	gui.add(turnSpeedSlider.setup("Turn Speed", simSettings.TurnSpeed, 0, 100));
+	gui.add(senseDistanceSlider.setup("Sense Distance", simSettings.SenseDistance, 1, 100));
+	gui.add(senseWeightSlider.setup("Sense Weight", simSettings.SenseWeight, 0, 5));
+	gui.add(senseAngleSlider.setup("Sense Angle", simSettings.SenseAngle, 0.1f, 2 * PI));
+	gui.add(sensorSizeSlider.setup("Sensor Size", simSettings.SensorSize, 0, 4));
+	gui.add(evaporationSpeedSlider.setup("Evaporation Speed", simSettings.EvaporateSpeed, 0.0f, 2));
+	gui.add(diffuseSpeedSlider.setup("Diffuse", simSettings.DiffuseSpeed, 0, 50));
+	
+	// Setup color sliders
+	//ofParameter<ofColor> param;
+	//color.setHsb(0, 100, 200);
+	//param.set(color);
+	//gui.add(colorSlider.setup("Color", param, 100, 255));
+	//color.setHsb(231, 100, 200);
+	//param.set(color);
+
+	ofSetWindowTitle("Slime Mold");
+	gui.setPosition(ofGetWidth() - GUI_WIDTH, 10);
+}
+
+void ofApp::updateSettings()
+{
+	simSettings.MoveSpeed = speedSlider;
+	simSettings.TurnSpeed = turnSpeedSlider;
+	simSettings.SenseDistance = senseDistanceSlider;
+	simSettings.SenseWeight = senseWeightSlider;
+	simSettings.SenseAngle = senseAngleSlider;
+	simSettings.SensorSize = sensorSizeSlider;
+	simSettings.EvaporateSpeed = evaporationSpeedSlider;
+	simSettings.DiffuseSpeed = diffuseSpeedSlider;
+}
+
 //--------------------------------------------------------------
 void ofApp::update()
 {
+	updateSettings();
+
 	trailMapShader.begin();
 	trailMapShader.setUniform1i("width", WIDTH);
 	trailMapShader.setUniform1i("height", HEIGHT);
-	trailMapShader.setUniform1f("evaporateSpeed", 0.25f);
-	trailMapShader.setUniform1f("diffuseSpeed", 10.f);
+	trailMapShader.setUniform1f("evaporateSpeed", simSettings.EvaporateSpeed);
+	trailMapShader.setUniform1f("diffuseSpeed", simSettings.DiffuseSpeed);
 	trailMapShader.setUniform1f("deltaTime", ofGetLastFrameTime());
 	trailMapShader.dispatchCompute((WIDTH * HEIGHT + 1024 - 1) / 1024, 1, 1);
 	trailMapShader.end();
@@ -68,15 +108,15 @@ void ofApp::update()
 	cellsShader.setUniform1i("width", WIDTH);
 	cellsShader.setUniform1i("height", HEIGHT);
 	cellsShader.setUniform1i("numOfCells", NUM_CELLS);
-	cellsShader.setUniform1f("moveSpeed", 80.0f);
+	cellsShader.setUniform1f("moveSpeed", simSettings.MoveSpeed);
 	cellsShader.setUniform1f("time", ofGetElapsedTimef());
 	cellsShader.setUniform1f("deltaTime", ofGetLastFrameTime());
 
-	cellsShader.setUniform1f("sensorDistance", 20.0f);
-	cellsShader.setUniform1f("senseAngle", 0.4f);
-	cellsShader.setUniform1f("turnSpeed", 30.6f);
-	cellsShader.setUniform1f("senseWeight", 3.0f);
-	cellsShader.setUniform1i("sensorSize", 1);
+	cellsShader.setUniform1f("senseDistance", simSettings.SenseDistance);
+	cellsShader.setUniform1f("senseAngle", simSettings.SenseAngle);
+	cellsShader.setUniform1f("turnSpeed", simSettings.TurnSpeed);
+	cellsShader.setUniform1f("senseWeight", simSettings.SenseWeight);
+	cellsShader.setUniform1i("sensorSize", simSettings.SensorSize);
 	cellsShader.dispatchCompute((cells.size() + 1024 - 1) / 1024, 1, 1);
 	cellsShader.end();
 
@@ -100,10 +140,13 @@ void ofApp::draw()
 	//fragShader.end();
 
 	texture.draw(0, 0, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+
+	gui.draw();
 }
 
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key){
+void ofApp::keyPressed(int key)
+{
 
 }
 
