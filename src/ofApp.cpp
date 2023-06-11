@@ -13,8 +13,9 @@ void ofApp::setup()
 
 void ofApp::setupCells()
 {
-	const ofVec2f center = ofVec2f(WIDTH / 2, HEIGHT / 2);
 	cells.resize(NUM_CELLS);
+
+	const ofVec2f center = ofVec2f(WIDTH / 2, HEIGHT / 2);
 	for (Cell& agent : cells)
 	{
 		const float dist = ofRandom(RADIUS);
@@ -90,6 +91,13 @@ void ofApp::updateSettings()
 	simSettings.DiffuseSpeed = diffuseSpeedSlider;
 }
 
+void ofApp::reset()
+{
+	setupCells();
+	cellsBuffer.updateData(cells);
+	trailMapBuffer.updateData(trailMap);
+}
+
 //--------------------------------------------------------------
 void ofApp::update()
 {
@@ -151,8 +159,12 @@ void ofApp::keyPressed(int key)
 }
 
 //--------------------------------------------------------------
-void ofApp::keyReleased(int key){
-
+void ofApp::keyReleased(int key)
+{
+	if (key == 'r')
+	{
+		reset();
+	}
 }
 
 //--------------------------------------------------------------

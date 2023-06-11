@@ -67,6 +67,7 @@ private:
 	void setupGui();
 
 	void updateSettings();
+	void reset();
 
 	ofBufferObject cellsBuffer;
 	ofBufferObject trailMapBuffer;
