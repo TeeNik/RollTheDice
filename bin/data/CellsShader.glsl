@@ -29,6 +29,7 @@ uniform int sensorSize;
 uniform float senseAngle;
 uniform float senseWeight;
 uniform float turnSpeed;
+uniform float trailWeight;
 
 const float PI = 3.1415;
 
@@ -76,9 +77,10 @@ void main()
 	float angle = cell.vel.x;
 
 	//sense
+	float senseAngleRad = senseAngle * (PI / 180);
 	float forward = sense(cell, 0.0f);
-	float left = sense(cell, -senseAngle);
-	float right = sense(cell, senseAngle);
+	float left = sense(cell, -senseAngleRad);
+	float right = sense(cell, senseAngleRad);
 	
 	//float rand = hash(uint(cell.pos.x + cell.pos.y * width));
 	float rand = 1.0;
@@ -119,5 +121,6 @@ void main()
 	cells[idx].vel.x = angle;
 
 	int posIdx = int(newPos.x) + int(newPos .y) * width;
-	trailMap[posIdx].value = vec4(1.0f);
+	vec4 trailValue = trailMap[posIdx].value;
+	trailMap[posIdx].value = min(vec4(1.0f), trailValue + vec4(trailWeight * deltaTime));
 }

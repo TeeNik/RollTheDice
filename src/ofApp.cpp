@@ -25,7 +25,7 @@ void ofApp::setupCells()
 		const glm::vec2 point = center + dir * dist;
 
 		agent.pos = point;
-		agent.vel = glm::vec2(angle, 0.0f);
+		agent.vel = glm::vec2(angle + 180, 0.0f);
 	}
 
 	trailMap.resize(WIDTH * HEIGHT);
@@ -62,7 +62,7 @@ void ofApp::setupGui()
 	gui.add(turnSpeedSlider.setup("Turn Speed", simSettings.TurnSpeed, 0, 100));
 	gui.add(senseDistanceSlider.setup("Sense Distance", simSettings.SenseDistance, 1, 100));
 	gui.add(senseWeightSlider.setup("Sense Weight", simSettings.SenseWeight, 0, 5));
-	gui.add(senseAngleSlider.setup("Sense Angle", simSettings.SenseAngle, 0.1f, 2 * PI));
+	gui.add(senseAngleSlider.setup("Sense Angle", simSettings.SenseAngle, 0.0f, 360.0f));
 	gui.add(sensorSizeSlider.setup("Sensor Size", simSettings.SensorSize, 0, 4));
 	gui.add(evaporationSpeedSlider.setup("Evaporation Speed", simSettings.EvaporateSpeed, 0.0f, 2));
 	gui.add(diffuseSpeedSlider.setup("Diffuse", simSettings.DiffuseSpeed, 0, 50));
@@ -125,6 +125,7 @@ void ofApp::update()
 	cellsShader.setUniform1f("turnSpeed", simSettings.TurnSpeed);
 	cellsShader.setUniform1f("senseWeight", simSettings.SenseWeight);
 	cellsShader.setUniform1i("sensorSize", simSettings.SensorSize);
+	cellsShader.setUniform1f("trailWeight", 1.0f);
 	cellsShader.dispatchCompute((cells.size() + 1024 - 1) / 1024, 1, 1);
 	cellsShader.end();
 

@@ -14,7 +14,7 @@
 #define WIDTH 1280
 #define HEIGHT 720
 #define NUM_CELLS 100000
-#define RADIUS 30
+#define RADIUS 360
 
 struct Cell
 {
@@ -35,7 +35,7 @@ struct SimSettings
 
 	float SenseDistance = 20.0f;
 	float SenseWeight = 3.0f;
-	float SenseAngle = 0.4f;
+	float SenseAngle = 30.0f;
 	int SensorSize = 1;
 
 	float EvaporateSpeed = 0.25f;
