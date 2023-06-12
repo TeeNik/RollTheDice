@@ -11,6 +11,7 @@ layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
 
 uniform int width;
 uniform int height; 
+uniform vec4 cellColor;
 
 void main()
 {
@@ -19,5 +20,6 @@ void main()
 	j = int(gl_GlobalInvocationID.y);
 
 	int idx = i + j * width;
-    imageStore(texture, ivec2(i, j), trailMap[idx].value);
+	vec4 color = trailMap[idx].value * cellColor;
+    imageStore(texture, ivec2(i, j), color);
 }

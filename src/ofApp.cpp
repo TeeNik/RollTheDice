@@ -66,14 +66,15 @@ void ofApp::setupGui()
 	gui.add(sensorSizeSlider.setup("Sensor Size", simSettings.SensorSize, 0, 4));
 	gui.add(evaporationSpeedSlider.setup("Evaporation Speed", simSettings.EvaporateSpeed, 0.0f, 2));
 	gui.add(diffuseSpeedSlider.setup("Diffuse", simSettings.DiffuseSpeed, 0, 50));
+	gui.add(trailWeightSlider.setup("Trail Weight", simSettings.TrailWeight, 0, 5));
 	
 	// Setup color sliders
-	//ofParameter<ofColor> param;
-	//color.setHsb(0, 100, 200);
-	//param.set(color);
-	//gui.add(colorSlider.setup("Color", param, 100, 255));
-	//color.setHsb(231, 100, 200);
-	//param.set(color);
+	ofParameter<ofColor> param;
+	color.setHsb(0, 100, 200);
+	param.set(color);
+	gui.add(colorSlider.setup("Color", param, 100, 255));
+	color.setHsb(231, 100, 200);
+	param.set(color);
 
 	ofSetWindowTitle("Slime Mold");
 	gui.setPosition(ofGetWidth() - GUI_WIDTH, 10);
@@ -89,6 +90,8 @@ void ofApp::updateSettings()
 	simSettings.SensorSize = sensorSizeSlider;
 	simSettings.EvaporateSpeed = evaporationSpeedSlider;
 	simSettings.DiffuseSpeed = diffuseSpeedSlider;
+	simSettings.TrailWeight = trailWeightSlider;
+	color = colorSlider;
 }
 
 void ofApp::reset()
@@ -125,13 +128,14 @@ void ofApp::update()
 	cellsShader.setUniform1f("turnSpeed", simSettings.TurnSpeed);
 	cellsShader.setUniform1f("senseWeight", simSettings.SenseWeight);
 	cellsShader.setUniform1i("sensorSize", simSettings.SensorSize);
-	cellsShader.setUniform1f("trailWeight", 1.0f);
+	cellsShader.setUniform1f("trailWeight", simSettings.TrailWeight);
 	cellsShader.dispatchCompute((cells.size() + 1024 - 1) / 1024, 1, 1);
 	cellsShader.end();
 
 	drawShader.begin();
 	drawShader.setUniform1i("width", WIDTH);
 	drawShader.setUniform1i("height", HEIGHT);
+	drawShader.setUniform4f("cellColor", color);
 	drawShader.dispatchCompute(WIDTH / 1, HEIGHT / 1, 1);
 	drawShader.end();
 }

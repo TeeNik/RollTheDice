@@ -13,8 +13,8 @@
 
 #define WIDTH 1280
 #define HEIGHT 720
-#define NUM_CELLS 100000
-#define RADIUS 360
+#define NUM_CELLS 1000000
+#define RADIUS (HEIGHT / 2)
 
 struct Cell
 {
@@ -34,12 +34,13 @@ struct SimSettings
 	float TurnSpeed = 30.0f;
 
 	float SenseDistance = 20.0f;
-	float SenseWeight = 3.0f;
+	float SenseWeight = 1.0f;
 	float SenseAngle = 30.0f;
 	int SensorSize = 1;
 
 	float EvaporateSpeed = 0.25f;
 	float DiffuseSpeed = 10.0f;
+	float TrailWeight = 1.0f;
 };
 
 class ofApp : public ofBaseApp{
@@ -90,6 +91,7 @@ private:
 	ofxIntSlider sensorSizeSlider;
 	ofxFloatSlider evaporationSpeedSlider;
 	ofxFloatSlider diffuseSpeedSlider;
+	ofxFloatSlider trailWeightSlider;
 	ofxColorSlider colorSlider;
 	ofColor color;
 
