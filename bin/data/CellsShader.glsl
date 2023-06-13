@@ -9,7 +9,6 @@ struct Cell
 struct Trail
 {
 	vec4 value;
-	vec4 test;
 };
 
 layout(std140, binding = 0) buffer cellsBuffer { Cell cells[]; };
