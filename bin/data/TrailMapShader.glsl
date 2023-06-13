@@ -3,6 +3,7 @@
 struct Trail
 {
 	vec4 value;
+	vec4 test;
 };
 
 layout(std140, binding = 1) buffer trailMapBuffer { Trail trailMap[]; };

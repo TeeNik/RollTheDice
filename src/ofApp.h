@@ -26,6 +26,7 @@ struct Cell
 struct Trail
 {
 	ofVec4f value {0,0,0,1};
+	ofVec4f test {0};
 };
 
 struct SimSettings
