@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "ofxUbo.h"
 
 #define TEXTURE_WIDTH 1280
 #define TEXTURE_HEIGHT 720
@@ -84,9 +85,10 @@ private:
 
 	std::vector<Cell> cells;
 	std::vector<Trail> trailMap;
+	std::vector<SpeciesSettings> speciesSettings;
 
 	ofTexture texture;
-	ofShader cellsShader;
+	ofxUboShader cellsShader;
 	ofShader trailMapShader;
 	ofShader drawShader;
 	ofShader fragShader;

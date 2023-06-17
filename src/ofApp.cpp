@@ -43,15 +43,15 @@ void ofApp::setupShaders()
 	trailMapShader.setupShaderFromFile(GL_COMPUTE_SHADER, "TrailMapShader.glsl");
 	trailMapShader.linkProgram();
 
-	texture.allocate(WIDTH, HEIGHT, GL_RGBA8);
-	texture.bindAsImage(2, GL_WRITE_ONLY);
-	texture.setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
-
 	cellsBuffer.allocate(cells, GL_DYNAMIC_DRAW);
 	cellsBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, 0);
 
 	trailMapBuffer.allocate(trailMap, GL_DYNAMIC_DRAW);
 	trailMapBuffer.bindBase(GL_SHADER_STORAGE_BUFFER, 1);
+
+	texture.allocate(WIDTH, HEIGHT, GL_RGBA8);
+	texture.bindAsImage(2, GL_WRITE_ONLY);
+	texture.setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
 }
 
 void ofApp::setupGui()
@@ -130,6 +130,11 @@ void ofApp::update()
 	cellsShader.setUniform1i("sensorSize", simSettings.SensorSize);
 	cellsShader.setUniform1f("trailWeight", simSettings.TrailWeight);
 	cellsShader.dispatchCompute((cells.size() + 1024 - 1) / 1024, 1, 1);
+
+	SpeciesSettings settings;
+	settings.MoveSpeed = 0.0f;
+	settings.TurnSpeed = 0.5f;
+	cellsShader.setUniformBuffer("SpeciesSettings", settings);
 	cellsShader.end();
 
 	drawShader.begin();
