@@ -11,13 +11,18 @@ struct Trail
 	vec4 value;
 };
 
-uniform SpeciesSettings
+struct SpeciesData
 {
 	float MoveSpeed;
 	float TurnSpeed;
 	float SenseDistance;
 	float SenseAngle;
 	int SensorSize;
+};
+
+uniform SpeciesSettings
+{
+	SpeciesData Species[1];
 } speciesSettings;
 
 layout(std140, binding = 0) buffer cellsBuffer { Cell cells[]; };

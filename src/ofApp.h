@@ -17,6 +17,8 @@
 #define NUM_CELLS 1000000
 #define RADIUS (HEIGHT / 2)
 
+#define MAX_SPECIES 4
+
 struct Cell
 {
 	glm::vec2 pos;
@@ -29,13 +31,18 @@ struct Trail
 	glm::vec4 value {0,0,0,1};
 };
 
+struct SpeciesData
+{
+	float MoveSpeed;
+	float TurnSpeed;
+	float SenseDistance;
+	float SenseAngle;
+	int SensorSize;
+};
+
 struct SpeciesSettings
 {
-	float MoveSpeed = 80.0f;
-	float TurnSpeed = 30.0f;
-	float SenseDistance = 20.0f;
-	float SenseAngle = 30.0f;
-	int SensorSize = 1;
+	SpeciesData Species[MAX_SPECIES];
 };
 
 struct SimSettings
