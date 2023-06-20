@@ -51,7 +51,6 @@ struct SimSettings
 	float TurnSpeed = 30.0f;
 
 	float SenseDistance = 20.0f;
-	float SenseWeight = 1.0f;
 	float SenseAngle = 30.0f;
 	int SensorSize = 1;
 
@@ -104,7 +103,6 @@ private:
 	ofxFloatSlider speedSlider;
 	ofxFloatSlider turnSpeedSlider;
 	ofxFloatSlider senseDistanceSlider;
-	ofxFloatSlider senseWeightSlider;
 	ofxFloatSlider senseAngleSlider;
 	ofxIntSlider sensorSizeSlider;
 	ofxFloatSlider evaporationSpeedSlider;

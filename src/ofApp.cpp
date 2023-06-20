@@ -85,7 +85,6 @@ void ofApp::updateSettings()
 	simSettings.MoveSpeed = speedSlider;
 	simSettings.TurnSpeed = turnSpeedSlider;
 	simSettings.SenseDistance = senseDistanceSlider;
-	simSettings.SenseWeight = senseWeightSlider;
 	simSettings.SenseAngle = senseAngleSlider;
 	simSettings.SensorSize = sensorSizeSlider;
 	simSettings.EvaporateSpeed = evaporationSpeedSlider;
@@ -126,7 +125,6 @@ void ofApp::update()
 	cellsShader.setUniform1f("senseDistance", simSettings.SenseDistance);
 	cellsShader.setUniform1f("senseAngle", simSettings.SenseAngle);
 	cellsShader.setUniform1f("turnSpeed", simSettings.TurnSpeed);
-	cellsShader.setUniform1f("senseWeight", simSettings.SenseWeight);
 	cellsShader.setUniform1i("sensorSize", simSettings.SensorSize);
 	cellsShader.setUniform1f("trailWeight", simSettings.TrailWeight);
 	cellsShader.dispatchCompute((cells.size() + 1024 - 1) / 1024, 1, 1);

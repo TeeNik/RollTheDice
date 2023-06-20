@@ -70,7 +70,7 @@ float sense(Cell cell, float angleOffset)
 			int y = int(sensePos.y) + offsetY;
 			if (x >= 0 && x < width && y >= 0 && y < height)
 			{
-				sum += dot(senseWeight, trailMap[x + y * width].value.x);
+				sum += dot(1.0f, trailMap[x + y * width].value.x);
 			}
 		}
 	}
