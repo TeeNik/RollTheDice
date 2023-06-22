@@ -193,6 +193,8 @@
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.cpp" />
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxToggle.cpp" />
     <ClCompile Include="src\ofxUbo.cpp" />
+    <ClCompile Include="src\SpeciesInfoUIGroup.cpp" />
+    <ClCompile Include="src\SpeciesSettings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ofApp.h" />
@@ -209,6 +211,8 @@
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.h" />
     <ClInclude Include="..\..\..\addons\ofxGui\src\ofxToggle.h" />
     <ClInclude Include="src\ofxUbo.h" />
+    <ClInclude Include="src\SpeciesInfoUIGroup.h" />
+    <ClInclude Include="src\SpeciesSettings.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">

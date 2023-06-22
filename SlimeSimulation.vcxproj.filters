@@ -38,6 +38,8 @@
       <Filter>addons\ofxGui\src</Filter>
     </ClCompile>
     <ClCompile Include="src\ofxUbo.cpp" />
+    <ClCompile Include="src\SpeciesInfoUIGroup.cpp" />
+    <ClCompile Include="src\SpeciesSettings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -94,6 +96,8 @@
       <Filter>addons\ofxGui\src</Filter>
     </ClInclude>
     <ClInclude Include="src\ofxUbo.h" />
+    <ClInclude Include="src\SpeciesInfoUIGroup.h" />
+    <ClInclude Include="src\SpeciesSettings.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
