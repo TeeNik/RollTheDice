@@ -3,6 +3,8 @@
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "ofxUbo.h"
+#include "SpeciesInfoUIGroup.h"
+#include "SpeciesSettings.h"
 
 #define TEXTURE_WIDTH 1280
 #define TEXTURE_HEIGHT 720
@@ -17,8 +19,6 @@
 #define NUM_CELLS 1000000
 #define RADIUS (HEIGHT / 2)
 
-#define MAX_SPECIES 4
-
 struct Cell
 {
 	glm::vec2 pos;
@@ -29,20 +29,6 @@ struct Cell
 struct Trail
 {
 	glm::vec4 value {0,0,0,1};
-};
-
-struct SpeciesData
-{
-	float MoveSpeed;
-	float TurnSpeed;
-	float SenseDistance;
-	float SenseAngle;
-	int SensorSize;
-};
-
-struct SpeciesSettings
-{
-	SpeciesData Species[MAX_SPECIES];
 };
 
 struct SimSettings
@@ -91,7 +77,7 @@ private:
 
 	std::vector<Cell> cells;
 	std::vector<Trail> trailMap;
-	std::vector<SpeciesSettings> speciesSettings;
+	//std::vector<SpeciesSettings> speciesSettings;
 
 	ofTexture texture;
 	ofxUboShader cellsShader;
@@ -111,6 +97,10 @@ private:
 	ofxColorSlider colorSlider;
 	ofColor color;
 
+
+	SpeciesInfoUIGroup group;
+
 	SimSettings simSettings;
+	SpeciesSettings speciesSettings;
 
 };

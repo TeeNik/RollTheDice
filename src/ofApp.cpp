@@ -61,13 +61,14 @@ void ofApp::setupGui()
 	gui.add(speedSlider.setup("Speed", simSettings.MoveSpeed, 0, 100));
 	gui.add(turnSpeedSlider.setup("Turn Speed", simSettings.TurnSpeed, 0, 100));
 	gui.add(senseDistanceSlider.setup("Sense Distance", simSettings.SenseDistance, 1, 100));
-	gui.add(senseWeightSlider.setup("Sense Weight", simSettings.SenseWeight, 0, 5));
 	gui.add(senseAngleSlider.setup("Sense Angle", simSettings.SenseAngle, 0.0f, 360.0f));
 	gui.add(sensorSizeSlider.setup("Sensor Size", simSettings.SensorSize, 0, 4));
 	gui.add(evaporationSpeedSlider.setup("Evaporation Speed", simSettings.EvaporateSpeed, 0.0f, 2));
 	gui.add(diffuseSpeedSlider.setup("Diffuse", simSettings.DiffuseSpeed, 0, 50));
 	gui.add(trailWeightSlider.setup("Trail Weight", simSettings.TrailWeight, 0, 5));
-	
+
+	group.setup(gui, speciesSettings.Species[0]);
+
 	// Setup color sliders
 	ofParameter<ofColor> param;
 	color.setHsb(0, 100, 200);
@@ -129,10 +130,11 @@ void ofApp::update()
 	cellsShader.setUniform1f("trailWeight", simSettings.TrailWeight);
 	cellsShader.dispatchCompute((cells.size() + 1024 - 1) / 1024, 1, 1);
 
-	SpeciesSettings settings;
-	settings.MoveSpeed = 0.0f;
-	settings.TurnSpeed = 0.5f;
-	cellsShader.setUniformBuffer("SpeciesSettings", settings);
+	//SpeciesSettings settings;
+	//settings.MoveSpeed = 0.0f;
+	//settings.TurnSpeed = 0.5f;
+	//cellsShader.setUniformBuffer("SpeciesSettings", settings);
+
 	cellsShader.end();
 
 	drawShader.begin();
