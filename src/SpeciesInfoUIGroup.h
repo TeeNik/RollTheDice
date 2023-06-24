@@ -10,6 +10,7 @@ public:
 
 private:
 	ofxGuiGroup group;
+	ofxToggle isOnToggle;
 	ofxFloatSlider speedSlider;
 	ofxFloatSlider turnSpeedSlider;
 	ofxFloatSlider senseDistanceSlider;
