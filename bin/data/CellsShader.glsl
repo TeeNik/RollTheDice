@@ -2,8 +2,10 @@
 
 struct Cell 
 {
-	vec2 pos;
-	vec2 vel;
+	vec4 pos;
+	vec4 vel;
+	vec4 speciesMask;
+	ivec4 speciesIndex;
 };
 
 struct Trail
@@ -11,7 +13,7 @@ struct Trail
 	vec4 value;
 };
 
-struct SpeciesData
+struct SpeciesInfo
 {
 	float MoveSpeed;
 	float TurnSpeed;
@@ -22,7 +24,7 @@ struct SpeciesData
 
 uniform SpeciesSettings
 {
-	SpeciesData Species[1];
+	SpeciesInfo Species[1];
 } speciesSettings;
 
 layout(std140, binding = 0) buffer cellsBuffer { Cell cells[]; };
@@ -59,9 +61,10 @@ float sense(Cell cell, float angleOffset)
 	//float angle = mod(cell.vel.x + angleOffset + 360.0f, 360.0f);
 	float angle = cell.vel.x + angleOffset;
 	vec2 dir = vec2(cos(angle), sin(angle));
-	vec2 sensePos = cell.pos + dir * senseDistance;
+	vec2 sensePos = cell.pos.xy + dir * senseDistance;
 
 	float sum = 0.0f;
+	//vec4 senseWeight = cell.speciesMask * 2 - 1;
 	for (int offsetX = -sensorSize; offsetX <= sensorSize; ++offsetX)
 	{
 		for (int offsetY = -sensorSize; offsetY <= sensorSize; ++offsetY)
@@ -131,7 +134,7 @@ void main()
 		//cells[idx].vel.x = rand * 2.0f * PI;
 	}
 
-	cells[idx].pos = newPos;
+	cells[idx].pos.xy = newPos;
 	cells[idx].vel.x = angle;
 
 	int posIdx = int(newPos.x) + int(newPos .y) * width;

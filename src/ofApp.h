@@ -21,9 +21,10 @@
 
 struct Cell
 {
-	glm::vec2 pos;
-	glm::vec2 vel;
-	//float angle;
+	glm::vec4 pos;
+	glm::vec4 vel;
+	glm::vec4 speciesMask;
+	glm::ivec4 speciesIndex {1, 1, 0, 0};
 };
 
 struct Trail
@@ -102,5 +103,7 @@ private:
 
 	SimSettings simSettings;
 	SpeciesSettings speciesSettings;
+
+	int numTeams = 1;
 
 };

@@ -16,7 +16,7 @@ void ofApp::setupCells()
 	cells.resize(NUM_CELLS);
 
 	const ofVec2f center = ofVec2f(WIDTH / 2, HEIGHT / 2);
-	for (Cell& agent : cells)
+	for (Cell& cell : cells)
 	{
 		const float dist = ofRandom(RADIUS);
 		const float angle = ofRandom(359);
@@ -24,8 +24,14 @@ void ofApp::setupCells()
 		const glm::vec2 dir = glm::vec2(cos(angle), sin(angle));
 		const glm::vec2 point = center + dir * dist;
 
-		agent.pos = point;
-		agent.vel = glm::vec2(angle + 180, 0.0f);
+		cell.pos = glm::vec4(point.x, point.y, 0, 0);
+		cell.vel = glm::vec4(angle + 180, 0.0f, 0.0f, 0.0f);
+
+		const int team = static_cast<int>(ofRandom(0, numTeams));
+		//cell.speciesMask.r = team == 0;
+		//cell.speciesMask.g = team == 1;
+		//cell.speciesMask.b = team == 2;
+		//cell.speciesMask.a = team > 2;
 	}
 
 	trailMap.resize(WIDTH * HEIGHT);
