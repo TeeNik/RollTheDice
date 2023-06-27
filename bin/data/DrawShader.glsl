@@ -20,6 +20,7 @@ void main()
 	j = int(gl_GlobalInvocationID.y);
 
 	int idx = i + j * width;
-	vec4 color = trailMap[idx].value * cellColor;
+	vec4 mask = vec4(1,0,0,0);
+	vec4 color = cellColor * dot(trailMap[idx].value, mask);
     imageStore(texture, ivec2(i, j), color);
 }

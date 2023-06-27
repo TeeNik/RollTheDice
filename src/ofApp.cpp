@@ -28,10 +28,10 @@ void ofApp::setupCells()
 		cell.vel = glm::vec4(angle + 180, 0.0f, 0.0f, 0.0f);
 
 		const int team = static_cast<int>(ofRandom(0, numTeams));
-		//cell.speciesMask.r = team == 0;
-		//cell.speciesMask.g = team == 1;
-		//cell.speciesMask.b = team == 2;
-		//cell.speciesMask.a = team > 2;
+		cell.speciesMask.r = team == 0;
+		cell.speciesMask.g = team == 1;
+		cell.speciesMask.b = team == 2;
+		cell.speciesMask.a = team > 2;
 	}
 
 	trailMap.resize(WIDTH * HEIGHT);

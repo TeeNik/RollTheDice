@@ -64,7 +64,7 @@ float sense(Cell cell, float angleOffset)
 	vec2 sensePos = cell.pos.xy + dir * senseDistance;
 
 	float sum = 0.0f;
-	//vec4 senseWeight = cell.speciesMask * 2 - 1;
+	vec4 senseWeight = cell.speciesMask * 2 - 1;
 	for (int offsetX = -sensorSize; offsetX <= sensorSize; ++offsetX)
 	{
 		for (int offsetY = -sensorSize; offsetY <= sensorSize; ++offsetY)
@@ -73,7 +73,7 @@ float sense(Cell cell, float angleOffset)
 			int y = int(sensePos.y) + offsetY;
 			if (x >= 0 && x < width && y >= 0 && y < height)
 			{
-				sum += dot(1.0f, trailMap[x + y * width].value.x);
+				sum += dot(senseWeight, trailMap[x + y * width].value);
 			}
 		}
 	}
@@ -139,5 +139,5 @@ void main()
 
 	int posIdx = int(newPos.x) + int(newPos .y) * width;
 	vec4 trailValue = trailMap[posIdx].value;
-	trailMap[posIdx].value = min(vec4(1.0f), trailValue + vec4(trailWeight * deltaTime));
+	trailMap[posIdx].value = min(vec4(1.0f), trailValue + vec4(1,0,0,0) * vec4(trailWeight * deltaTime));
 }
