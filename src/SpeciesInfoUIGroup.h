@@ -7,6 +7,7 @@ class SpeciesInfoUIGroup
 {
 public:
 	void setup(ofxPanel& panel, const SpeciesInfo& info);
+	void updateInfo(SpeciesInfo& info);
 
 private:
 	ofxGuiGroup group;
