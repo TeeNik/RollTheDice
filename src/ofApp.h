@@ -14,11 +14,14 @@
 #define SCREEN_WIDTH (TEXTURE_WIDTH + GUI_WIDTH)
 #define SCREEN_HEIGHT TEXTURE_HEIGHT
 
+//If WIDTH and HEIGHT are smaller that texture size, image will be pixelated
 #define WIDTH 1280
 #define HEIGHT 720
-#define NUM_CELLS 1000000
 #define RADIUS (HEIGHT / 2)
 
+#define NUM_CELLS 1000000
+
+//I used vec4 to keep correct memory layout of struct
 struct Cell
 {
 	glm::vec4 pos;
@@ -99,11 +102,10 @@ private:
 	ofColor color;
 
 
-	SpeciesInfoUIGroup group;
+	SpeciesInfoUIGroup speciesSettingsGUI[MAX_SPECIES];
+	SpeciesSettings speciesSettings;
+	int numTeams = 1;
 
 	SimSettings simSettings;
-	SpeciesSettings speciesSettings;
-
-	int numTeams = 1;
 
 };

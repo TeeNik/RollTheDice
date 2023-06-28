@@ -4,11 +4,13 @@
 
 struct SpeciesInfo
 {
-	float MoveSpeed = 80.0f;
-	float TurnSpeed = 30.0f;
-	float SenseDistance = 20.0f;
-	float SenseAngle = 30.0f;
-	int SensorSize = 1;
+	float moveSpeed = 80.0f;
+	float turnSpeed = 30.0f;
+	float senseDistance = 20.0f;
+	float senseAngle = 30.0f;
+	int sensorSize = 1;
+	ofColor color{ 255, 255, 255, 255 };
+	//glm::vec4 Color{ 1, 1, 1, 1 };
 };
 
 struct SpeciesSettings
