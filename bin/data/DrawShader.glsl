@@ -5,6 +5,16 @@ struct Trail
 	vec4 value;
 };
 
+struct SpeciesInfo
+{
+	float moveSpeed;
+	float turnSpeed;
+	float senseDistance;
+	float senseAngle;
+	int sensorSize;
+	vec4 color;
+};
+
 layout(std140, binding = 1) buffer trailMapBuffer { Trail trailMap[]; };
 layout(rgba8, binding = 2) uniform writeonly image2D texture;
 layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;

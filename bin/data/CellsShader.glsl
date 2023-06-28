@@ -15,17 +15,16 @@ struct Trail
 
 struct SpeciesInfo
 {
-	float MoveSpeed;
-	float TurnSpeed;
-	float SenseDistance;
-	float SenseAngle;
-	int SensorSize;
+	float moveSpeed;
+	float turnSpeed;
+	float senseDistance;
+	float senseAngle;
+	int sensorSize;
+	vec4 color;
 };
 
-uniform SpeciesSettings
-{
-	SpeciesInfo Species[1];
-} speciesSettings;
+uniform SpeciesInfo SpeciesSettings[4];
+
 
 layout(std140, binding = 0) buffer cellsBuffer { Cell cells[]; };
 layout(std140, binding = 1) buffer trailMapBuffer { Trail trailMap[]; };
