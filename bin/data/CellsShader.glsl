@@ -23,7 +23,7 @@ struct SpeciesInfo
 	vec4 color;
 };
 
-uniform SpeciesInfo SpeciesSettings[4];
+uniform SpeciesInfo speciesSettings[4];
 
 
 layout(std140, binding = 0) buffer cellsBuffer { Cell cells[]; };

@@ -103,9 +103,13 @@ private:
 
 
 	SpeciesInfoUIGroup speciesSettingsGUI[MAX_SPECIES];
-	SpeciesSettings speciesSettings;
+	SpeciesInfo speciesSettings[MAX_SPECIES];
+	//SpeciesSettings speciesSettings;
+
 	int numTeams = 1;
 
 	SimSettings simSettings;
+
+	void passSpeciesSettingsToShader(int speciesIndex, const SpeciesInfo& info);
 
 };

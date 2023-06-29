@@ -73,7 +73,10 @@ void ofApp::setupGui()
 	gui.add(diffuseSpeedSlider.setup("Diffuse", simSettings.DiffuseSpeed, 0, 50));
 	gui.add(trailWeightSlider.setup("Trail Weight", simSettings.TrailWeight, 0, 5));
 
-	group.setup(gui, speciesSettings.Species[0]);
+	for (int i = 0; i < MAX_SPECIES; ++i)
+	{
+		speciesSettingsGUI[i].setup(gui, speciesSettings[i]);
+	}
 
 	// Setup color sliders
 	ofParameter<ofColor> param;
@@ -107,6 +110,17 @@ void ofApp::reset()
 	trailMapBuffer.updateData(trailMap);
 }
 
+void ofApp::passSpeciesSettingsToShader(int speciesIndex, const SpeciesInfo& info)
+{
+	const std::string name = "speciesSettings[" + std::to_string(speciesIndex) + "].";
+	cellsShader.setUniform1f(name + "moveSpeed", info.moveSpeed);
+	cellsShader.setUniform1f(name + "turnSpeed", info.turnSpeed);
+	cellsShader.setUniform1f(name + "senseDistance", info.senseDistance);
+	cellsShader.setUniform1f(name + "senseAngle", info.senseAngle);
+	cellsShader.setUniform1i(name + "sensorSize", info.sensorSize);
+	cellsShader.setUniform4f(name + "color", info.color);
+}
+
 //--------------------------------------------------------------
 void ofApp::update()
 {
@@ -134,6 +148,12 @@ void ofApp::update()
 	cellsShader.setUniform1f("turnSpeed", simSettings.TurnSpeed);
 	cellsShader.setUniform1i("sensorSize", simSettings.SensorSize);
 	cellsShader.setUniform1f("trailWeight", simSettings.TrailWeight);
+
+	for (int i = 0; i < MAX_SPECIES; ++i)
+	{
+		passSpeciesSettingsToShader(i, speciesSettings[i]);
+	}
+
 	cellsShader.dispatchCompute((cells.size() + 1024 - 1) / 1024, 1, 1);
 
 	//SpeciesSettings settings;

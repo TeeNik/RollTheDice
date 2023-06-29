@@ -12,8 +12,3 @@ struct SpeciesInfo
 	ofColor color{ 255, 255, 255, 255 };
 	//glm::vec4 Color{ 1, 1, 1, 1 };
 };
-
-struct SpeciesSettings
-{
-	SpeciesInfo Species[MAX_SPECIES];
-};
