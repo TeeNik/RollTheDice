@@ -22,6 +22,7 @@ layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
 uniform int width;
 uniform int height; 
 uniform vec4 cellColor;
+uniform SpeciesInfo speciesSettings[4];
 
 void main()
 {

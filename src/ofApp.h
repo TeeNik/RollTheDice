@@ -110,6 +110,6 @@ private:
 
 	SimSettings simSettings;
 
-	void passSpeciesSettingsToShader(int speciesIndex, const SpeciesInfo& info);
+	void passSpeciesSettingsToShader(ofShader& shader, int speciesIndex, const SpeciesInfo& info);
 
 };

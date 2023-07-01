@@ -23,7 +23,6 @@ struct SpeciesInfo
 	vec4 color;
 };
 
-uniform SpeciesInfo speciesSettings[4];
 
 
 layout(std140, binding = 0) buffer cellsBuffer { Cell cells[]; };
@@ -45,6 +44,8 @@ uniform float senseAngle;
 uniform float senseWeight;
 uniform float turnSpeed;
 uniform float trailWeight;
+
+uniform SpeciesInfo speciesSettings[4];
 
 const float PI = 3.1415;
 

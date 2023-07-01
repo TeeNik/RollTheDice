@@ -110,15 +110,15 @@ void ofApp::reset()
 	trailMapBuffer.updateData(trailMap);
 }
 
-void ofApp::passSpeciesSettingsToShader(int speciesIndex, const SpeciesInfo& info)
+void ofApp::passSpeciesSettingsToShader(ofShader& shader, int speciesIndex, const SpeciesInfo& info)
 {
 	const std::string name = "speciesSettings[" + std::to_string(speciesIndex) + "].";
-	cellsShader.setUniform1f(name + "moveSpeed", info.moveSpeed);
-	cellsShader.setUniform1f(name + "turnSpeed", info.turnSpeed);
-	cellsShader.setUniform1f(name + "senseDistance", info.senseDistance);
-	cellsShader.setUniform1f(name + "senseAngle", info.senseAngle);
-	cellsShader.setUniform1i(name + "sensorSize", info.sensorSize);
-	cellsShader.setUniform4f(name + "color", info.color);
+	shader.setUniform1f(name + "moveSpeed", info.moveSpeed);
+	shader.setUniform1f(name + "turnSpeed", info.turnSpeed);
+	shader.setUniform1f(name + "senseDistance", info.senseDistance);
+	shader.setUniform1f(name + "senseAngle", info.senseAngle);
+	shader.setUniform1i(name + "sensorSize", info.sensorSize);
+	shader.setUniform4f(name + "color", info.color);
 }
 
 //--------------------------------------------------------------
@@ -151,7 +151,7 @@ void ofApp::update()
 
 	for (int i = 0; i < MAX_SPECIES; ++i)
 	{
-		passSpeciesSettingsToShader(i, speciesSettings[i]);
+		passSpeciesSettingsToShader(cellsShader, i, speciesSettings[i]);
 	}
 
 	cellsShader.dispatchCompute((cells.size() + 1024 - 1) / 1024, 1, 1);
@@ -167,6 +167,12 @@ void ofApp::update()
 	drawShader.setUniform1i("width", WIDTH);
 	drawShader.setUniform1i("height", HEIGHT);
 	drawShader.setUniform4f("cellColor", color);
+
+	for (int i = 0; i < MAX_SPECIES; ++i)
+	{
+		passSpeciesSettingsToShader(drawShader, i, speciesSettings[i]);
+	}
+
 	drawShader.dispatchCompute(WIDTH / 1, HEIGHT / 1, 1);
 	drawShader.end();
 }
