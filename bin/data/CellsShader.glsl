@@ -33,16 +33,10 @@ layout(local_size_x = 1024, local_size_y = 1, local_size_z = 1) in;
 
 uniform int width;
 uniform int height; 
-uniform float moveSpeed; 
 uniform float deltaTime; 
 uniform int numOfCells;
 uniform float time;
 
-uniform float senseDistance;
-uniform int sensorSize;
-uniform float senseAngle;
-uniform float senseWeight;
-uniform float turnSpeed;
 uniform float trailWeight;
 
 uniform SpeciesInfo speciesSettings[4];
@@ -56,18 +50,18 @@ float hash(uint n)
     return float( n & uint(0x7fffffffU))/float(0x7fffffff);
 }
 
-float sense(Cell cell, float angleOffset)
+float sense(Cell cell, SpeciesInfo info, float angleOffset)
 {
 	//float angle = mod(cell.vel.x + angleOffset + 360.0f, 360.0f);
 	float angle = cell.vel.x + angleOffset;
 	vec2 dir = vec2(cos(angle), sin(angle));
-	vec2 sensePos = cell.pos.xy + dir * senseDistance;
+	vec2 sensePos = cell.pos.xy + dir * info.senseDistance;
 
 	float sum = 0.0f;
 	vec4 senseWeight = cell.speciesMask * 2 - 1;
-	for (int offsetX = -sensorSize; offsetX <= sensorSize; ++offsetX)
+	for (int offsetX = -info.sensorSize; offsetX <= info.sensorSize; ++offsetX)
 	{
-		for (int offsetY = -sensorSize; offsetY <= sensorSize; ++offsetY)
+		for (int offsetY = -info.sensorSize; offsetY <= info.sensorSize; ++offsetY)
 		{
 			int x = int(sensePos.x) + offsetX;
 			int y = int(sensePos.y) + offsetY;
@@ -93,11 +87,13 @@ void main()
 	Cell cell = cells[idx];
 	float angle = cell.vel.x;
 
+	SpeciesInfo info = speciesSettings[cell.speciesIndex.x];
+
 	//sense
-	float senseAngleRad = senseAngle * (PI / 180);
-	float forward = sense(cell, 0.0f);
-	float left = sense(cell, -senseAngleRad);
-	float right = sense(cell, senseAngleRad);
+	float senseAngleRad = info.senseAngle * (PI / 180);
+	float forward = sense(cell, info, 0.0f);
+	float left = sense(cell, info, -senseAngleRad);
+	float right = sense(cell, info, senseAngleRad);
 	
 	//float rand = hash(uint(cell.pos.x + cell.pos.y * width));
 	float rand = 1.0;
@@ -108,22 +104,22 @@ void main()
 	}
 	else if (forward < left && forward < right)
 	{
-		angle = mod(angle + (rand - 0.5) * 2 * turnSpeed * deltaTime + 360.0f, 360.0f);
-		//angle += (rand - 0.5) * 2 * turnSpeed * deltaTime;
+		angle = mod(angle + (rand - 0.5) * 2 * info.turnSpeed * deltaTime + 360.0f, 360.0f);
+		//angle += (rand - 0.5) * 2 * info.turnSpeed * deltaTime;
 	}
 	else if (left > right)
 	{
-		angle = mod(angle - (rand * turnSpeed * deltaTime + 360.0f), 360.0f);
-		//angle -= rand * turnSpeed * deltaTime;
+		angle = mod(angle - (rand * info.turnSpeed * deltaTime + 360.0f), 360.0f);
+		//angle -= rand * info.turnSpeed * deltaTime;
 	}
 	else if (right > left)
 	{
-		angle = mod(angle + (rand * turnSpeed * deltaTime + 360.0f), 360.0f);
-		//angle += rand * turnSpeed * deltaTime;
+		angle = mod(angle + (rand * info.turnSpeed * deltaTime + 360.0f), 360.0f);
+		//angle += rand * info.turnSpeed * deltaTime;
 	}
 
 	vec2 dir = vec2(cos(angle), sin(angle));
-	vec2 newPos = cell.pos.xy + dir * moveSpeed * deltaTime;
+	vec2 newPos = cell.pos.xy + dir * info.moveSpeed * deltaTime;
 
 	if (newPos.x < 0 || newPos.x > width - 1 || newPos.y < 0 || newPos.y > height - 1)
 	{

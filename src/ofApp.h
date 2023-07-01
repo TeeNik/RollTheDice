@@ -32,7 +32,7 @@ struct Cell
 
 struct Trail
 {
-	glm::vec4 value {0,0,0,1};
+	glm::vec4 value {0,0,0,0};
 };
 
 struct SimSettings
