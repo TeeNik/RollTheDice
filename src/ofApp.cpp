@@ -32,6 +32,7 @@ void ofApp::setupCells()
 		cell.speciesMask.g = team == 1;
 		cell.speciesMask.b = team == 2;
 		cell.speciesMask.a = team > 2;
+		cell.speciesIndex.r = team;
 	}
 
 	trailMap.resize(WIDTH * HEIGHT);
@@ -101,6 +102,11 @@ void ofApp::updateSettings()
 	simSettings.DiffuseSpeed = diffuseSpeedSlider;
 	simSettings.TrailWeight = trailWeightSlider;
 	color = colorSlider;
+
+	for (int i = 0; i < MAX_SPECIES; ++i)
+	{
+		speciesSettingsGUI[i].updateInfo(speciesSettings[i]);
+	}
 }
 
 void ofApp::reset()
@@ -155,12 +161,6 @@ void ofApp::update()
 	}
 
 	cellsShader.dispatchCompute((cells.size() + 1024 - 1) / 1024, 1, 1);
-
-	//SpeciesSettings settings;
-	//settings.MoveSpeed = 0.0f;
-	//settings.TurnSpeed = 0.5f;
-	//cellsShader.setUniformBuffer("SpeciesSettings", settings);
-
 	cellsShader.end();
 
 	drawShader.begin();

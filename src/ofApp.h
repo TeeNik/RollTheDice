@@ -27,7 +27,7 @@ struct Cell
 	glm::vec4 pos;
 	glm::vec4 vel;
 	glm::vec4 speciesMask;
-	glm::ivec4 speciesIndex {1, 1, 0, 0};
+	glm::ivec4 speciesIndex {0, 0, 0, 0};
 };
 
 struct Trail
