@@ -1,9 +1,9 @@
 #include "SpeciesInfoUIGroup.h"
 #include "SpeciesSettings.h"
 
-void SpeciesInfoUIGroup::setup(ofxPanel& panel, const SpeciesInfo& info)
+void SpeciesInfoUIGroup::setup(ofxPanel& panel, const SpeciesInfo& info, int speciesTeam)
 {
-	panel.add(group.setup("Collection"));
+	panel.add(group.setup("Species " + std::to_string(speciesTeam)));
 	group.add(isOnToggle.setup("Is On"));
 	group.add(speedSlider.setup("Speed", info.moveSpeed, 0, 100));
 	group.add(turnSpeedSlider.setup("Turn Speed", info.turnSpeed, 0, 100));
@@ -21,4 +21,9 @@ void SpeciesInfoUIGroup::updateInfo(SpeciesInfo& info)
 	info.senseAngle = senseAngleSlider;
 	info.sensorSize = sensorSizeSlider;
 	info.color = colorSlider;
+}
+
+bool SpeciesInfoUIGroup::isActive()
+{
+	return isOnToggle;
 }

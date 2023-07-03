@@ -6,8 +6,9 @@ struct SpeciesInfo;
 class SpeciesInfoUIGroup
 {
 public:
-	void setup(ofxPanel& panel, const SpeciesInfo& info);
+	void setup(ofxPanel& panel, const SpeciesInfo& info, int speciesTeam);
 	void updateInfo(SpeciesInfo& info);
+	bool isActive();
 
 private:
 	ofxGuiGroup group;

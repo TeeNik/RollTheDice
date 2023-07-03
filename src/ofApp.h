@@ -37,13 +37,6 @@ struct Trail
 
 struct SimSettings
 {
-	float MoveSpeed = 80.0f;
-	float TurnSpeed = 30.0f;
-
-	float SenseDistance = 20.0f;
-	float SenseAngle = 30.0f;
-	int SensorSize = 1;
-
 	float EvaporateSpeed = 0.25f;
 	float DiffuseSpeed = 10.0f;
 	float TrailWeight = 1.0f;
@@ -90,26 +83,18 @@ private:
 	ofShader fragShader;
 
 	ofxPanel gui;
-	ofxFloatSlider speedSlider;
-	ofxFloatSlider turnSpeedSlider;
-	ofxFloatSlider senseDistanceSlider;
-	ofxFloatSlider senseAngleSlider;
-	ofxIntSlider sensorSizeSlider;
 	ofxFloatSlider evaporationSpeedSlider;
 	ofxFloatSlider diffuseSpeedSlider;
 	ofxFloatSlider trailWeightSlider;
-	ofxColorSlider colorSlider;
-	ofColor color;
-
 
 	SpeciesInfoUIGroup speciesSettingsGUI[MAX_SPECIES];
 	SpeciesInfo speciesSettings[MAX_SPECIES];
-	//SpeciesSettings speciesSettings;
 
 	int numTeams = 1;
 
 	SimSettings simSettings;
 
 	void passSpeciesSettingsToShader(ofShader& shader, int speciesIndex, const SpeciesInfo& info);
+	void countNumOfTeams();
 
 };

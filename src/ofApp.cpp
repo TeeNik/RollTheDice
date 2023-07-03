@@ -6,13 +6,14 @@ void ofApp::setup()
 	ofSetFrameRate(60);
 	ofBackground(ofColor::black);
 
+	setupGui();
 	setupCells();
 	setupShaders();
-	setupGui();
 }
 
 void ofApp::setupCells()
 {
+	countNumOfTeams();
 	cells.resize(NUM_CELLS);
 
 	const ofVec2f center = ofVec2f(WIDTH / 2, HEIGHT / 2);
@@ -65,27 +66,14 @@ void ofApp::setupGui()
 {
 	gui.setup();
 	// Setup parameter sliders
-	gui.add(speedSlider.setup("Speed", simSettings.MoveSpeed, 0, 100));
-	gui.add(turnSpeedSlider.setup("Turn Speed", simSettings.TurnSpeed, 0, 100));
-	gui.add(senseDistanceSlider.setup("Sense Distance", simSettings.SenseDistance, 1, 100));
-	gui.add(senseAngleSlider.setup("Sense Angle", simSettings.SenseAngle, 0.0f, 360.0f));
-	gui.add(sensorSizeSlider.setup("Sensor Size", simSettings.SensorSize, 0, 4));
 	gui.add(evaporationSpeedSlider.setup("Evaporation Speed", simSettings.EvaporateSpeed, 0.0f, 2));
 	gui.add(diffuseSpeedSlider.setup("Diffuse", simSettings.DiffuseSpeed, 0, 50));
 	gui.add(trailWeightSlider.setup("Trail Weight", simSettings.TrailWeight, 0, 5));
 
 	for (int i = 0; i < MAX_SPECIES; ++i)
 	{
-		speciesSettingsGUI[i].setup(gui, speciesSettings[i]);
+		speciesSettingsGUI[i].setup(gui, speciesSettings[i], i);
 	}
-
-	// Setup color sliders
-	ofParameter<ofColor> param;
-	color.setHsb(0, 100, 200);
-	param.set(color);
-	gui.add(colorSlider.setup("Color", param, 100, 255));
-	color.setHsb(231, 100, 200);
-	param.set(color);
 
 	ofSetWindowTitle("Slime Mold");
 	gui.setPosition(ofGetWidth() - GUI_WIDTH, 10);
@@ -93,15 +81,9 @@ void ofApp::setupGui()
 
 void ofApp::updateSettings()
 {
-	simSettings.MoveSpeed = speedSlider;
-	simSettings.TurnSpeed = turnSpeedSlider;
-	simSettings.SenseDistance = senseDistanceSlider;
-	simSettings.SenseAngle = senseAngleSlider;
-	simSettings.SensorSize = sensorSizeSlider;
 	simSettings.EvaporateSpeed = evaporationSpeedSlider;
 	simSettings.DiffuseSpeed = diffuseSpeedSlider;
 	simSettings.TrailWeight = trailWeightSlider;
-	color = colorSlider;
 
 	for (int i = 0; i < MAX_SPECIES; ++i)
 	{
@@ -127,6 +109,18 @@ void ofApp::passSpeciesSettingsToShader(ofShader& shader, int speciesIndex, cons
 	shader.setUniform4f(name + "color", info.color);
 }
 
+void ofApp::countNumOfTeams()
+{
+	numTeams = 0;
+	for (int i = 0; i < MAX_SPECIES; ++i)
+	{
+		if (speciesSettingsGUI[i].isActive())
+		{
+			++numTeams;
+		}
+	}
+}
+
 //--------------------------------------------------------------
 void ofApp::update()
 {
@@ -145,14 +139,8 @@ void ofApp::update()
 	cellsShader.setUniform1i("width", WIDTH);
 	cellsShader.setUniform1i("height", HEIGHT);
 	cellsShader.setUniform1i("numOfCells", NUM_CELLS);
-	cellsShader.setUniform1f("moveSpeed", simSettings.MoveSpeed);
 	cellsShader.setUniform1f("time", ofGetElapsedTimef());
 	cellsShader.setUniform1f("deltaTime", ofGetLastFrameTime());
-
-	cellsShader.setUniform1f("senseDistance", simSettings.SenseDistance);
-	cellsShader.setUniform1f("senseAngle", simSettings.SenseAngle);
-	cellsShader.setUniform1f("turnSpeed", simSettings.TurnSpeed);
-	cellsShader.setUniform1i("sensorSize", simSettings.SensorSize);
 	cellsShader.setUniform1f("trailWeight", simSettings.TrailWeight);
 
 	for (int i = 0; i < MAX_SPECIES; ++i)
@@ -166,7 +154,6 @@ void ofApp::update()
 	drawShader.begin();
 	drawShader.setUniform1i("width", WIDTH);
 	drawShader.setUniform1i("height", HEIGHT);
-	drawShader.setUniform4f("cellColor", color);
 
 	for (int i = 0; i < MAX_SPECIES; ++i)
 	{
@@ -180,17 +167,7 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-	//fragShader.begin();
-	//fragShader.setUniform1i("width", WIDTH);
-	//fragShader.setUniform1i("height", HEIGHT);
-	//fragShader.setUniform1i("cellSize", 60);
-	//fragShader.setUniform1f("xRatio", 1.0f);
-	//fragShader.setUniform1f("yRatio", 1.0f);
-	//ofDrawRectangle(0, 0, WIDTH, HEIGHT);
-	//fragShader.end();
-
 	texture.draw(0, 0, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-
 	gui.draw();
 }
 
