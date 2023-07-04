@@ -96,5 +96,6 @@ private:
 
 	void passSpeciesSettingsToShader(ofShader& shader, int speciesIndex, const SpeciesInfo& info);
 	void countNumOfTeams();
+	void initSpeciesSettings();
 
 };

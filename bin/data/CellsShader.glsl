@@ -135,5 +135,5 @@ void main()
 
 	int posIdx = int(newPos.x) + int(newPos .y) * width;
 	vec4 trailValue = trailMap[posIdx].value;
-	trailMap[posIdx].value = min(vec4(1.0f), trailValue + vec4(1,0,0,0) * vec4(trailWeight * deltaTime));
+	trailMap[posIdx].value = min(vec4(1.0f), trailValue + cell.speciesMask * vec4(trailWeight * deltaTime));
 }

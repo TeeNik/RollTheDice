@@ -112,12 +112,20 @@ void ofApp::passSpeciesSettingsToShader(ofShader& shader, int speciesIndex, cons
 void ofApp::countNumOfTeams()
 {
 	numTeams = 0;
-	for (int i = 0; i < MAX_SPECIES; ++i)
+	for (auto& species : speciesSettingsGUI)
 	{
-		if (speciesSettingsGUI[i].isActive())
+		if (species.isActive())
 		{
 			++numTeams;
 		}
+	}
+}
+
+void ofApp::initSpeciesSettings()
+{
+	for (int i = 0; i < MAX_SPECIES; ++i)
+	{
+		
 	}
 }
 
