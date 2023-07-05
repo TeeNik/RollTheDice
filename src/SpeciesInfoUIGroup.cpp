@@ -4,7 +4,7 @@
 void SpeciesInfoUIGroup::setup(ofxPanel& panel, const SpeciesInfo& info, int speciesTeam)
 {
 	panel.add(group.setup("Species " + std::to_string(speciesTeam)));
-	group.add(isOnToggle.setup("Is On"));
+	group.add(isOnToggle.setup("Is On", speciesTeam == 0));
 	group.add(speedSlider.setup("Speed", info.moveSpeed, 0, 100));
 	group.add(turnSpeedSlider.setup("Turn Speed", info.turnSpeed, 0, 100));
 	group.add(senseDistanceSlider.setup("Sense Distance", info.senseDistance, 1, 100));

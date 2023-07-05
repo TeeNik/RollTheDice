@@ -65,6 +65,8 @@ private:
 	void setupCells();
 	void setupShaders();
 	void setupGui();
+	void passSpeciesSettingsToShader(ofShader& shader, int speciesIndex, const SpeciesInfo& info);
+	void countNumOfTeams();
 
 	void updateSettings();
 	void reset();
@@ -74,28 +76,20 @@ private:
 
 	std::vector<Cell> cells;
 	std::vector<Trail> trailMap;
-	//std::vector<SpeciesSettings> speciesSettings;
 
 	ofTexture texture;
 	ofxUboShader cellsShader;
 	ofShader trailMapShader;
 	ofShader drawShader;
-	ofShader fragShader;
 
 	ofxPanel gui;
 	ofxFloatSlider evaporationSpeedSlider;
 	ofxFloatSlider diffuseSpeedSlider;
 	ofxFloatSlider trailWeightSlider;
 
+	SimSettings simSettings;
 	SpeciesInfoUIGroup speciesSettingsGUI[MAX_SPECIES];
 	SpeciesInfo speciesSettings[MAX_SPECIES];
 
 	int numTeams = 1;
-
-	SimSettings simSettings;
-
-	void passSpeciesSettingsToShader(ofShader& shader, int speciesIndex, const SpeciesInfo& info);
-	void countNumOfTeams();
-	void initSpeciesSettings();
-
 };

@@ -41,7 +41,6 @@ void ofApp::setupCells()
 
 void ofApp::setupShaders()
 {
-	fragShader.load("RectShader/shader");
 	drawShader.setupShaderFromFile(GL_COMPUTE_SHADER, "DrawShader.glsl");
 	drawShader.linkProgram();
 
@@ -118,14 +117,6 @@ void ofApp::countNumOfTeams()
 		{
 			++numTeams;
 		}
-	}
-}
-
-void ofApp::initSpeciesSettings()
-{
-	for (int i = 0; i < MAX_SPECIES; ++i)
-	{
-		
 	}
 }
 
