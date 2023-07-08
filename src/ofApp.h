@@ -42,6 +42,14 @@ struct SimSettings
 	float TrailWeight = 1.0f;
 };
 
+enum SpawnMode
+{
+	Point,
+	Random,
+	CircleIn,
+	RandomCircle,
+};
+
 class ofApp : public ofBaseApp{
 
 public:
