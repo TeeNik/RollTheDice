@@ -64,10 +64,15 @@ void ofApp::setupShaders()
 void ofApp::setupGui()
 {
 	gui.setup();
-	// Setup parameter sliders
+
+	loadPresetButton.addListener(this, &ofApp::loadPreset);
+	savePresetButton.addListener(this, &ofApp::savePreset);
+
+	gui.add(loadPresetButton.setup("Load Preset"));
+	gui.add(savePresetButton.setup("Save Preset"));
 	gui.add(evaporationSpeedSlider.setup("Evaporation Speed", simSettings.EvaporateSpeed, 0.0f, 2));
 	gui.add(diffuseSpeedSlider.setup("Diffuse", simSettings.DiffuseSpeed, 0, 50));
-	gui.add(trailWeightSlider.setup("Trail Weight", simSettings.TrailWeight, 0, 5));
+	gui.add(trailWeightSlider.setup("Trail Weight", simSettings.TrailWeight, 0, 20));
 
 	for (int i = 0; i < MAX_SPECIES; ++i)
 	{
@@ -95,6 +100,15 @@ void ofApp::reset()
 	setupCells();
 	cellsBuffer.updateData(cells);
 	trailMapBuffer.updateData(trailMap);
+}
+
+void ofApp::loadPreset()
+{
+	std::cout << "load preset\n";
+}
+
+void ofApp::savePreset()
+{
 }
 
 void ofApp::passSpeciesSettingsToShader(ofShader& shader, int speciesIndex, const SpeciesInfo& info)
@@ -168,6 +182,12 @@ void ofApp::draw()
 {
 	texture.draw(0, 0, TEXTURE_WIDTH, TEXTURE_HEIGHT);
 	gui.draw();
+}
+
+void ofApp::exit()
+{
+	loadPresetButton.removeListener(this, &ofApp::loadPreset);
+	savePresetButton.removeListener(this, &ofApp::savePreset);
 }
 
 //--------------------------------------------------------------

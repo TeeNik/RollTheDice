@@ -53,9 +53,10 @@ enum SpawnMode
 class ofApp : public ofBaseApp{
 
 public:
-	void setup();
-	void update();
-	void draw();
+	virtual void setup() override;
+	virtual void update() override;
+	virtual void draw() override;
+	virtual void exit() override;
 
 	void keyPressed(int key);
 	void keyReleased(int key);
@@ -79,6 +80,9 @@ private:
 	void updateSettings();
 	void reset();
 
+	void loadPreset();
+	void savePreset();
+
 	ofBufferObject cellsBuffer;
 	ofBufferObject trailMapBuffer;
 
@@ -91,6 +95,11 @@ private:
 	ofShader drawShader;
 
 	ofxPanel gui;
+
+	ofxButton loadPresetButton;
+	ofxButton savePresetButton;
+	ofxTextField presetNameText;
+
 	ofxFloatSlider evaporationSpeedSlider;
 	ofxFloatSlider diffuseSpeedSlider;
 	ofxFloatSlider trailWeightSlider;

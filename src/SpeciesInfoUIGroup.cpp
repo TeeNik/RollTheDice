@@ -6,7 +6,7 @@ void SpeciesInfoUIGroup::setup(ofxPanel& panel, const SpeciesInfo& info, int spe
 	panel.add(group.setup("Species " + std::to_string(speciesTeam)));
 	group.add(isOnToggle.setup("Is On", speciesTeam == 0));
 	group.add(speedSlider.setup("Speed", info.moveSpeed, 0, 100));
-	group.add(turnSpeedSlider.setup("Turn Speed", info.turnSpeed, 0, 100));
+	group.add(turnSpeedSlider.setup("Turn Speed", info.turnSpeed, -100, 100));
 	group.add(senseDistanceSlider.setup("Sense Distance", info.senseDistance, 1, 100));
 	group.add(senseAngleSlider.setup("Sense Angle", info.senseAngle, 0.0f, 360.0f));
 	group.add(sensorSizeSlider.setup("Sensor Size", info.sensorSize, 0, 4));
