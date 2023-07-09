@@ -16,16 +16,19 @@ void ofApp::setupCells()
 	countNumOfTeams();
 	cells.resize(NUM_CELLS);
 
-	const ofVec2f center = ofVec2f(WIDTH / 2, HEIGHT / 2);
+	constexpr glm::vec2 center = glm::vec2(WIDTH / 2, HEIGHT / 2);
+
 	for (Cell& cell : cells)
 	{
-		const float dist = ofRandom(RADIUS);
-		const float angle = ofRandom(359);
+		glm::vec2 startPos { 0, 0 };
+		float angle = ofRandomuf() * PI * 2;
 
-		const glm::vec2 dir = glm::vec2(cos(angle), sin(angle));
-		const glm::vec2 point = center + dir * dist;
+		if (simSettings.spawnMode == Point)
+		{
+			startPos = center;
+		}
 
-		cell.pos = glm::vec4(point.x, point.y, 0, 0);
+		cell.pos = glm::vec4(startPos.x, startPos.y, 0, 0);
 		cell.vel = glm::vec4(angle + 180, 0.0f, 0.0f, 0.0f);
 
 		const int team = static_cast<int>(ofRandom(0, numTeams));

@@ -35,19 +35,20 @@ struct Trail
 	glm::vec4 value {0,0,0,0};
 };
 
-struct SimSettings
-{
-	float EvaporateSpeed = 0.25f;
-	float DiffuseSpeed = 10.0f;
-	float TrailWeight = 1.0f;
-};
-
 enum SpawnMode
 {
 	Point,
 	Random,
 	CircleIn,
 	RandomCircle,
+};
+
+struct SimSettings
+{
+	float EvaporateSpeed = 0.25f;
+	float DiffuseSpeed = 10.0f;
+	float TrailWeight = 1.0f;
+	SpawnMode spawnMode = Point;
 };
 
 class ofApp : public ofBaseApp{
