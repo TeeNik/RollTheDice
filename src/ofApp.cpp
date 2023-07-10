@@ -27,6 +27,10 @@ void ofApp::setupCells()
 		{
 			startPos = center;
 		}
+		else if (simSettings.spawnMode == Random)
+		{
+			startPos = { ofRandom(WIDTH), ofRandom(HEIGHT) };
+		}
 
 		cell.pos = glm::vec4(startPos.x, startPos.y, 0, 0);
 		cell.vel = glm::vec4(angle + 180, 0.0f, 0.0f, 0.0f);
