@@ -31,6 +31,11 @@ void ofApp::setupCells()
 		{
 			startPos = { ofRandom(WIDTH), ofRandom(HEIGHT) };
 		}
+		else if (simSettings.spawnMode == RandomCircle)
+		{
+			const float radius = ofRandomf() * HEIGHT * 0.15f;
+			startPos = center + glm::vec2{ cos(angle) * radius, sin(angle) * radius };
+		}
 
 		cell.pos = glm::vec4(startPos.x, startPos.y, 0, 0);
 		cell.vel = glm::vec4(angle + 180, 0.0f, 0.0f, 0.0f);
