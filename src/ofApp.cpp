@@ -40,13 +40,12 @@ void ofApp::setupCells()
 		{
 			const float radius = ofRandomf() * HEIGHT * 0.49f;
 			startPos = center + glm::vec2{ cos(angle) * radius, sin(angle) * radius };
-			glm::vec2 dir = (center - startPos);
-			normalize(dir);
+			const glm::vec2 dir = normalize(center - startPos);
 			angle = atan2(dir.y, dir.x);
 		}
 
 		cell.pos = glm::vec4(startPos.x, startPos.y, 0, 0);
-		cell.vel = glm::vec4(angle + 180, 0.0f, 0.0f, 0.0f);
+		cell.vel = glm::vec4(angle, 0.0f, 0.0f, 0.0f);
 
 		const int team = static_cast<int>(ofRandom(0, numTeams));
 		cell.speciesMask.r = team == 0;
