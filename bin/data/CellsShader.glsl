@@ -92,11 +92,13 @@ void main()
 	//sense
 	float senseAngleRad = info.senseAngle * (PI / 180);
 	float forward = sense(cell, info, 0.0f);
-	float left = sense(cell, info, -senseAngleRad);
-	float right = sense(cell, info, senseAngleRad);
+	float left = sense(cell, info, senseAngleRad);
+	float right = sense(cell, info, -senseAngleRad);
 	
 	//float rand = hash(uint(cell.pos.x + cell.pos.y * width));
-	float rand = 1.0;
+	float rand = hash(uint(cell.pos.y * width + cell.pos.x + hash(uint(idx + time + 100000))));
+	//float rand = 1.0;
+	float turnSpeed = info.turnSpeed * 2 * PI * deltaTime;
 	
 	if (forward > left && forward > right)
 	{
@@ -104,19 +106,20 @@ void main()
 	}
 	else if (forward < left && forward < right)
 	{
-		angle = mod(angle + (rand - 0.5) * 2 * info.turnSpeed * deltaTime + 360.0f, 360.0f);
-		//angle += (rand - 0.5) * 2 * info.turnSpeed * deltaTime;
-	}
-	else if (left > right)
-	{
-		angle = mod(angle - (rand * info.turnSpeed * deltaTime + 360.0f), 360.0f);
-		//angle -= rand * info.turnSpeed * deltaTime;
+		//angle = mod(angle + (rand - 0.5) * 2 * info.turnSpeed * deltaTime + 360.0f, 360.0f);
+		angle += (rand - 0.5) * 2 * turnSpeed;
 	}
 	else if (right > left)
 	{
-		angle = mod(angle + (rand * info.turnSpeed * deltaTime + 360.0f), 360.0f);
-		//angle += rand * info.turnSpeed * deltaTime;
+		//angle = mod(angle + (rand * info.turnSpeed * deltaTime + 360.0f), 360.0f);
+		angle -= rand * turnSpeed;
 	}
+	else if (left > right)
+	{
+		//angle = mod(angle - (rand * info.turnSpeed * deltaTime + 360.0f), 360.0f);
+		angle += rand * turnSpeed;
+	}
+	
 
 	vec2 dir = vec2(cos(angle), sin(angle));
 	vec2 newPos = cell.pos.xy + dir * info.moveSpeed * deltaTime;
