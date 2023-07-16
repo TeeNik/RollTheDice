@@ -43,11 +43,27 @@ uniform SpeciesInfo speciesSettings[4];
 
 const float PI = 3.1415;
 
-float hash(uint n) 
+float hash01(uint n) 
 {
 	n = (n << 13U) ^ n;
     n = n * (n * n * 15731U + 789221U) + 1376312589U;
     return float( n & uint(0x7fffffffU))/float(0x7fffffff);
+}
+
+uint hash(uint state)
+{
+    state ^= 2747636419u;
+    state *= 2654435769u;
+    state ^= state >> 16;
+    state *= 2654435769u;
+    state ^= state >> 16;
+    state *= 2654435769u;
+    return state;
+}
+
+float scaleToRange01(uint state)
+{
+    return state / 4294967295.0;
 }
 
 float sense(Cell cell, SpeciesInfo info, float angleOffset)
@@ -95,7 +111,8 @@ void main()
 	float left = sense(cell, info, senseAngleRad);
 	float right = sense(cell, info, -senseAngleRad);
 	
-	float rand = hash(uint(cell.pos.y * width + cell.pos.x + hash(uint(idx + time + 100000))));
+	uint rand = hash(uint(cell.pos.y * width + cell.pos.x + hash(uint(idx + time + 100000))));
+	float steer = scaleToRange01(rand); 
 	float turnSpeed = info.turnSpeed * 2 * PI * deltaTime;
 	
 	if (forward > left && forward > right)
@@ -104,15 +121,15 @@ void main()
 	}
 	else if (forward < left && forward < right)
 	{
-		angle += (rand - 0.5) * 2 * turnSpeed;
+		angle += (steer - 0.5) * 2 * turnSpeed;
 	}
 	else if (right > left)
 	{
-		angle -= rand * turnSpeed;
+		angle -= steer * turnSpeed;
 	}
 	else if (left > right)
 	{
-		angle += rand * turnSpeed;
+		angle += steer * turnSpeed;
 	}
 
 	vec2 dir = vec2(cos(angle), sin(angle));
@@ -120,11 +137,13 @@ void main()
 
 	if (newPos.x < 0 || newPos.x > width - 1 || newPos.y < 0 || newPos.y > height - 1)
 	{
-		newPos.x = min(width - 1, max(0, cell.pos.x));
-		newPos.y = min(height - 1, max(0, cell.pos.y));
-		angle = mod(angle + 60, 360.0f);
-		//float rand = hash(int(cell.pos.y) * width + int(cell.pos.x) + int(idx * hash(idx)));
-		//cells[idx].vel.x = rand * 2.0f * PI;
+		rand = hash(rand);
+		float randomAngle = scaleToRange01(rand) * 2 * PI;
+
+		newPos.x = min(width - 1, max(0, newPos.x));
+		newPos.y = min(height - 1, max(0, newPos.y));
+		//angle = mod(angle + 60, 360.0f);
+		angle = randomAngle;
 	}
 
 	cells[idx].pos.xy = newPos;
