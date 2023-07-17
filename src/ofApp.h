@@ -19,7 +19,7 @@
 #define HEIGHT 720
 #define RADIUS (HEIGHT / 2)
 
-#define NUM_CELLS 1000000
+#define NUM_CELLS 250000
 
 //I used vec4 to keep correct memory layout of struct
 struct Cell
@@ -39,8 +39,8 @@ enum SpawnMode
 {
 	Point,
 	Random,
-	CircleIn,
 	RandomCircle,
+	CircleIn
 };
 
 struct SimSettings
@@ -48,7 +48,7 @@ struct SimSettings
 	float EvaporateSpeed = 0.25f;
 	float DiffuseSpeed = 10.0f;
 	float TrailWeight = 1.0f;
-	SpawnMode spawnMode = Point;
+	SpawnMode spawnMode = CircleIn;
 };
 
 class ofApp : public ofBaseApp{
@@ -108,6 +108,6 @@ private:
 	SimSettings simSettings;
 	SpeciesInfoUIGroup speciesSettingsGUI[MAX_SPECIES];
 	SpeciesInfo speciesSettings[MAX_SPECIES];
-
+		
 	int numTeams = 1;
 };
