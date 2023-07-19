@@ -46,6 +46,7 @@
     <ClCompile Include="src\ofxUbo.cpp" />
     <ClCompile Include="src\SpeciesInfoUIGroup.cpp" />
     <ClCompile Include="src\SpeciesSettings.cpp" />
+    <ClCompile Include="src\PresetManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -137,6 +138,7 @@
     <ClInclude Include="src\ofxUbo.h" />
     <ClInclude Include="src\SpeciesInfoUIGroup.h" />
     <ClInclude Include="src\SpeciesSettings.h" />
+    <ClInclude Include="src\PresetManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />

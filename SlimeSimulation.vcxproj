@@ -195,6 +195,7 @@
     <ClCompile Include="..\..\..\addons\ofxJSON\src\ofxJSONElement.cpp" />
     <ClCompile Include="..\..\..\addons\ofxJSON\libs\jsoncpp\src\jsoncpp.cpp" />
     <ClCompile Include="src\ofxUbo.cpp" />
+    <ClCompile Include="src\PresetManager.cpp" />
     <ClCompile Include="src\SpeciesInfoUIGroup.cpp" />
     <ClCompile Include="src\SpeciesSettings.cpp" />
   </ItemGroup>
@@ -217,6 +218,7 @@
     <ClInclude Include="..\..\..\addons\ofxJSON\libs\jsoncpp\include\json\json-forwards.h" />
     <ClInclude Include="..\..\..\addons\ofxJSON\libs\jsoncpp\include\json\json.h" />
     <ClInclude Include="src\ofxUbo.h" />
+    <ClInclude Include="src\PresetManager.h" />
     <ClInclude Include="src\SpeciesInfoUIGroup.h" />
     <ClInclude Include="src\SpeciesSettings.h" />
   </ItemGroup>
