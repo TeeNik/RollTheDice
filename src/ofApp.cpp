@@ -1,4 +1,5 @@
 #include "ofApp.h"
+#include "PresetManager.h"
 
 //--------------------------------------------------------------
 void ofApp::setup()
@@ -128,6 +129,7 @@ void ofApp::loadPreset()
 
 void ofApp::savePreset()
 {
+	PresetManager::savePreset("preset");
 }
 
 void ofApp::passSpeciesSettingsToShader(ofShader& shader, int speciesIndex, const SpeciesInfo& info)
