@@ -48,7 +48,7 @@ void ofApp::setupCells()
 		cell.pos = glm::vec4(startPos.x, startPos.y, 0, 0);
 		cell.vel = glm::vec4(angle, 0.0f, 0.0f, 0.0f);
 
-		const int team = static_cast<int>(ofRandom(0, numTeams));
+		const int team = static_cast<int>(ofRandom(0, simSettings.NumOfTeams));
 		cell.speciesMask.r = team == 0;
 		cell.speciesMask.g = team == 1;
 		cell.speciesMask.b = team == 2;
@@ -145,14 +145,15 @@ void ofApp::passSpeciesSettingsToShader(ofShader& shader, int speciesIndex, cons
 
 void ofApp::countNumOfTeams()
 {
-	numTeams = 0;
+	int num = 0;
 	for (auto& species : speciesSettingsGUI)
 	{
 		if (species.isActive())
 		{
-			++numTeams;
+			++num;
 		}
 	}
+	simSettings.NumOfTeams = num;
 }
 
 //--------------------------------------------------------------

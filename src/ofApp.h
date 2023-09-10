@@ -49,6 +49,7 @@ struct SimSettings
 	float DiffuseSpeed = 10.0f;
 	float TrailWeight = 1.0f;
 	SpawnMode spawnMode = CircleIn;
+	int NumOfTeams = 1;
 };
 
 class ofApp : public ofBaseApp{
@@ -108,6 +109,4 @@ private:
 	SimSettings simSettings;
 	SpeciesInfoUIGroup speciesSettingsGUI[MAX_SPECIES];
 	SpeciesInfo speciesSettings[MAX_SPECIES];
-		
-	int numTeams = 1;
 };
