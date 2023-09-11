@@ -129,7 +129,7 @@ void ofApp::loadPreset()
 
 void ofApp::savePreset()
 {
-	PresetManager::savePreset("preset");
+	PresetManager::savePreset("preset", simSettings, speciesSettings);
 }
 
 void ofApp::passSpeciesSettingsToShader(ofShader& shader, int speciesIndex, const SpeciesInfo& info)
