@@ -90,6 +90,8 @@ void ofApp::setupGui()
 
 	gui.add(loadPresetButton.setup("Load Preset"));
 	gui.add(savePresetButton.setup("Save Preset"));
+	gui.add(presetNameText.setup("Preset Name", "preset"));
+
 	gui.add(evaporationSpeedSlider.setup("Evaporation Speed", simSettings.EvaporateSpeed, 0.0f, 2));
 	gui.add(diffuseSpeedSlider.setup("Diffuse", simSettings.DiffuseSpeed, 0, 50));
 	gui.add(trailWeightSlider.setup("Trail Weight", simSettings.TrailWeight, 0, 20));
@@ -129,7 +131,7 @@ void ofApp::loadPreset()
 
 void ofApp::savePreset()
 {
-	PresetManager::savePreset("preset", simSettings, speciesSettings);
+	PresetManager::savePreset(presetNameText, simSettings, speciesSettings);
 }
 
 void ofApp::passSpeciesSettingsToShader(ofShader& shader, int speciesIndex, const SpeciesInfo& info)
