@@ -9,8 +9,8 @@ void PresetManager::savePreset(const string& presetName, const SimSettings& simS
 	ofFile file(filePath);
 
 	Json::Value ev;
-	ev["Account"]["name"] = "John123";
-	ev["Account"]["surname"] = "Smith";
+	ofxJSONElement json;
+
 
 	if (!file.exists()) {
 		std::cout << "The file " + filePath + " is missing\n";
@@ -21,45 +21,65 @@ void PresetManager::savePreset(const string& presetName, const SimSettings& simS
 		std::cout << "The file " + filePath + " is found\n";
 	}
 
-	ev[presetName]["EvaporateSpeed"] = simSettings.EvaporateSpeed;
-	ev[presetName]["DiffuseSpeed"] = simSettings.DiffuseSpeed;
-	ev[presetName]["TrailWeight"] = simSettings.TrailWeight;
-	ev[presetName]["NumOfTeams"] = simSettings.NumOfTeams;
+	json["EvaporateSpeed"] = simSettings.EvaporateSpeed;
+	json["DiffuseSpeed"] = simSettings.DiffuseSpeed;
+	json["TrailWeight"] = simSettings.TrailWeight;
+	json["NumOfTeams"] = simSettings.NumOfTeams;
+
+	for (int i = 0; i < MAX_SPECIES; ++i)
+	{
+		const ::string speciesName = "Species " + std::to_string(i);
+
+		json[speciesName]["moveSpeed"] = speciesSettings[i].moveSpeed;
+		json[speciesName]["turnSpeed"] = speciesSettings[i].turnSpeed;
+		json[speciesName]["senseDistance"] = speciesSettings[i].senseDistance;
+		json[speciesName]["senseAngle"] = speciesSettings[i].senseAngle;
+		json[speciesName]["sensorSize"] = speciesSettings[i].sensorSize;
+		json[speciesName]["color"]["r"] = speciesSettings[i].color.r;
+		json[speciesName]["color"]["g"] = speciesSettings[i].color.g;
+		json[speciesName]["color"]["b"] = speciesSettings[i].color.b;
+		json[speciesName]["color"]["a"] = speciesSettings[i].color.a;
+	}
+
+	std::cout << ev << std::endl;
+
+	bool result = json.save(filePath);
+
+	//file.write(ev.asString().c_str(), ev.asString().size());
+}
+
+void PresetManager::loadPreset(const string& presetName, SimSettings& simSettings, SpeciesInfo* speciesSettings)
+{
+	const string filePath = PRESET_DIR + presetName + ".json";
+	ofFile file(filePath);
+
+	if (!file.exists()) {
+		std::cout << "Preset " + presetName + " is missing\n";
+		return;
+	}
+
+	file.close();
+
+	ofxJSONElement json;
+	json.open(filePath);
+
+	simSettings.EvaporateSpeed = json["EvaporateSpeed"].asFloat();
+	simSettings.DiffuseSpeed = json["DiffuseSpeed"].asFloat();
+	simSettings.TrailWeight = json["TrailWeight"].asFloat();
+	simSettings.NumOfTeams = json["NumOfTeams"].asInt();
 
 	for (int i = 0; i < MAX_SPECIES; ++i)
 	{
 		std::string speciesName = "Species " + std::to_string(i);
 
-		//ev[presetName][speciesName]["isOnToggle"] = speciesSettings[i].isOnToggle;
-		ev[presetName][speciesName]["moveSpeed"] = speciesSettings[i].moveSpeed;
-		ev[presetName][speciesName]["turnSpeed"] = speciesSettings[i].turnSpeed;
-		ev[presetName][speciesName]["senseDistance"] = speciesSettings[i].senseDistance;
-		ev[presetName][speciesName]["senseAngle"] = speciesSettings[i].senseAngle;
-		ev[presetName][speciesName]["sensorSize"] = speciesSettings[i].sensorSize;
-		ev[presetName][speciesName]["color"]["r"] = speciesSettings[i].color.r;
-		ev[presetName][speciesName]["color"]["g"] = speciesSettings[i].color.g;
-		ev[presetName][speciesName]["color"]["b"] = speciesSettings[i].color.b;
-		ev[presetName][speciesName]["color"]["a"] = speciesSettings[i].color.a;
+		speciesSettings[i].moveSpeed = json[speciesName]["moveSpeed"].asFloat();
+		speciesSettings[i].turnSpeed = json[speciesName]["turnSpeed"].asFloat();
+		speciesSettings[i].senseDistance = json[speciesName]["senseDistance"].asFloat();
+		speciesSettings[i].senseAngle = json[speciesName]["senseAngle"].asFloat();
+		speciesSettings[i].sensorSize = json[speciesName]["sensorSize"].asInt();
+		speciesSettings[i].color.r = json[speciesName]["color"]["r"].asInt();
+		speciesSettings[i].color.g = json[speciesName]["color"]["g"].asInt();
+		speciesSettings[i].color.b = json[speciesName]["color"]["b"].asInt();
+		speciesSettings[i].color.a = json[speciesName]["color"]["a"].asInt();
 	}
-
-
-	std::cout << ev << std::endl;
-
-	ofxJSONElement json(ev);
-	bool result = json.save(filePath);
-
-	if (!file.exists()) {
-		std::cout << "The file " + filePath + " is missing\n";
-		file.create();
-	}
-	else
-	{
-		std::cout << "The file " + filePath + " is found\n";
-	}
-
-	//file.write(ev.asString().c_str(), ev.asString().size());
-}
-
-void PresetManager::loadPreset(const std::string& presetName)
-{
 }

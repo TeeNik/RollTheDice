@@ -13,9 +13,7 @@ class PresetManager
 {
 public:
 	static void savePreset(const string& presetName, const SimSettings& simSettings, const SpeciesInfo* speciesSettings);
-	static void loadPreset(const string& presetName);
-
-	ofxJSONElement jsonElement;
+	static void loadPreset(const string& presetName, SimSettings& simSettings, SpeciesInfo* speciesSettings);
 
 };
 
