@@ -10,5 +10,4 @@ struct SpeciesInfo
 	float senseAngle = 30.0f;
 	int sensorSize = 1;
 	ofColor color{ 255, 255, 255, 255 };
-	//glm::vec4 Color{ 1, 1, 1, 1 };
 };

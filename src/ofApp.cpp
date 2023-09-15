@@ -126,7 +126,7 @@ void ofApp::reset()
 
 void ofApp::loadPreset()
 {
-	std::cout << "load preset\n";
+	PresetManager::loadPreset(presetNameText, simSettings, speciesSettings);
 }
 
 void ofApp::savePreset()
