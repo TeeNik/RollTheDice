@@ -23,6 +23,16 @@ void SpeciesInfoUIGroup::updateInfo(SpeciesInfo& info)
 	info.color = colorSlider;
 }
 
+void SpeciesInfoUIGroup::loadInfo(const SpeciesInfo& info)
+{
+	speedSlider = info.moveSpeed;
+	turnSpeedSlider = info.turnSpeed;
+	senseDistanceSlider = info.senseDistance;
+	senseAngleSlider = info.senseAngle;
+	sensorSizeSlider = info.sensorSize;
+	colorSlider = info.color;
+}
+
 bool SpeciesInfoUIGroup::isActive()
 {
 	return isOnToggle;

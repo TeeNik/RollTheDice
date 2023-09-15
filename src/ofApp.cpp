@@ -117,6 +117,18 @@ void ofApp::updateSettings()
 	}
 }
 
+void ofApp::updateUiBySettings()
+{
+	evaporationSpeedSlider = simSettings.EvaporateSpeed;
+	diffuseSpeedSlider = simSettings.DiffuseSpeed;
+	trailWeightSlider = simSettings.TrailWeight;
+
+	for (int i = 0; i < MAX_SPECIES; ++i)
+	{
+		speciesSettingsGUI[i].loadInfo(speciesSettings[i]);
+	}
+}
+
 void ofApp::reset()
 {
 	setupCells();
@@ -127,6 +139,7 @@ void ofApp::reset()
 void ofApp::loadPreset()
 {
 	PresetManager::loadPreset(presetNameText, simSettings, speciesSettings);
+	updateUiBySettings();
 }
 
 void ofApp::savePreset()

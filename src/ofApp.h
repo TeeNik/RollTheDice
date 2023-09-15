@@ -80,6 +80,7 @@ private:
 	void countNumOfTeams();
 
 	void updateSettings();
+	void updateUiBySettings();
 	void reset();
 
 	void loadPreset();

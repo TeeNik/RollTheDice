@@ -8,6 +8,7 @@ class SpeciesInfoUIGroup
 public:
 	void setup(ofxPanel& panel, const SpeciesInfo& info, int speciesTeam);
 	void updateInfo(SpeciesInfo& info);
+	void loadInfo(const SpeciesInfo& info);
 	bool isActive();
 
 private:
