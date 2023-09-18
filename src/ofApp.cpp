@@ -96,6 +96,18 @@ void ofApp::setupGui()
 	gui.add(diffuseSpeedSlider.setup("Diffuse", simSettings.DiffuseSpeed, 0, 50));
 	gui.add(trailWeightSlider.setup("Trail Weight", simSettings.TrailWeight, 0, 20));
 
+	spawnModeList = std::make_unique<ofxDropdown>("Spawn Mode");
+	spawnModeList->setDropDownPosition(ofxDropdown_<std::basic_string<char>>::DD_LEFT);
+	spawnModeList->disableMultipleSelection();
+	spawnModeList->enableCollapseOnSelection();
+	spawnModeList->add("Point");
+	spawnModeList->add("Random");
+	spawnModeList->add("RandomCircle");
+	spawnModeList->add("CircleIn");
+	gui.add(spawnModeList.get());
+
+	//gui.add(&spawnModeList);
+
 	for (int i = 0; i < MAX_SPECIES; ++i)
 	{
 		speciesSettingsGUI[i].setup(gui, speciesSettings[i], i);

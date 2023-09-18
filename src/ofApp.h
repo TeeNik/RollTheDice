@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "ofxUbo.h"
+#include "ofxDropdown.h"
 #include "SpeciesInfoUIGroup.h"
 #include "SpeciesSettings.h"
 
@@ -106,6 +107,7 @@ private:
 	ofxFloatSlider evaporationSpeedSlider;
 	ofxFloatSlider diffuseSpeedSlider;
 	ofxFloatSlider trailWeightSlider;
+	std::unique_ptr<ofxDropdown> spawnModeList;
 
 	SimSettings simSettings;
 	SpeciesInfoUIGroup speciesSettingsGUI[MAX_SPECIES];
