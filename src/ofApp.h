@@ -49,8 +49,10 @@ struct SimSettings
 	float EvaporateSpeed = 0.25f;
 	float DiffuseSpeed = 10.0f;
 	float TrailWeight = 1.0f;
-	SpawnMode spawnMode = CircleIn;
+	std::string SpawnMode = "CircleIn";
 	int NumOfTeams = 1;
+
+	static std::map<std::string, enum SpawnMode> GetStringToSpawnModeMap();
 };
 
 class ofApp : public ofBaseApp{
@@ -61,17 +63,8 @@ public:
 	virtual void draw() override;
 	virtual void exit() override;
 
-	void keyPressed(int key);
-	void keyReleased(int key);
-	void mouseMoved(int x, int y );
-	void mouseDragged(int x, int y, int button);
-	void mousePressed(int x, int y, int button);
-	void mouseReleased(int x, int y, int button);
-	void mouseEntered(int x, int y);
-	void mouseExited(int x, int y);
-	void windowResized(int w, int h);
-	void dragEvent(ofDragInfo dragInfo);
-	void gotMessage(ofMessage msg);
+	virtual void keyPressed(int key) override;
+	virtual void keyReleased(int key) override;
 
 private:
 	void setupCells();
@@ -107,7 +100,7 @@ private:
 	ofxFloatSlider evaporationSpeedSlider;
 	ofxFloatSlider diffuseSpeedSlider;
 	ofxFloatSlider trailWeightSlider;
-	std::unique_ptr<ofxDropdown> spawnModeList;
+	ofxDropdown spawnModeList;
 
 	SimSettings simSettings;
 	SpeciesInfoUIGroup speciesSettingsGUI[MAX_SPECIES];

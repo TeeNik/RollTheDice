@@ -1,6 +1,17 @@
 #include "ofApp.h"
 #include "PresetManager.h"
 
+std::map<std::string, SpawnMode> SimSettings::GetStringToSpawnModeMap()
+{
+	static std::map<std::string, enum SpawnMode> StringToSpawnModeMap = {
+	{"Point", Point},
+	{"Random", Random},
+	{"RandomCircle", RandomCircle},
+	{"CircleIn", CircleIn}
+	};
+	return StringToSpawnModeMap;
+}
+
 //--------------------------------------------------------------
 void ofApp::setup()
 {
@@ -24,20 +35,21 @@ void ofApp::setupCells()
 		glm::vec2 startPos { 0, 0 };
 		float angle = ofRandomuf() * PI * 2;
 
-		if (simSettings.spawnMode == Point)
+		SpawnMode Mode = SimSettings::GetStringToSpawnModeMap()[simSettings.SpawnMode];
+		if (Mode == Point)
 		{
 			startPos = center;
 		}
-		else if (simSettings.spawnMode == Random)
+		else if (Mode == Random)
 		{
 			startPos = { ofRandom(WIDTH), ofRandom(HEIGHT) };
 		}
-		else if (simSettings.spawnMode == RandomCircle)
+		else if (Mode == RandomCircle)
 		{
 			const float radius = ofRandomf() * HEIGHT * 0.15f;
 			startPos = center + glm::vec2{ cos(angle) * radius, sin(angle) * radius };
 		}
-		else if (simSettings.spawnMode == CircleIn)
+		else if (Mode == CircleIn)
 		{
 			const float radius = ofRandomf() * HEIGHT * 0.49f;
 			startPos = center + glm::vec2{ cos(angle) * radius, sin(angle) * radius };
@@ -96,17 +108,15 @@ void ofApp::setupGui()
 	gui.add(diffuseSpeedSlider.setup("Diffuse", simSettings.DiffuseSpeed, 0, 50));
 	gui.add(trailWeightSlider.setup("Trail Weight", simSettings.TrailWeight, 0, 20));
 
-	spawnModeList = std::make_unique<ofxDropdown>("Spawn Mode");
-	spawnModeList->setDropDownPosition(ofxDropdown_<std::basic_string<char>>::DD_LEFT);
-	spawnModeList->disableMultipleSelection();
-	spawnModeList->enableCollapseOnSelection();
-	spawnModeList->add("Point");
-	spawnModeList->add("Random");
-	spawnModeList->add("RandomCircle");
-	spawnModeList->add("CircleIn");
-	gui.add(spawnModeList.get());
-
-	//gui.add(&spawnModeList);
+	gui.add(spawnModeList.setup("Spawn Mode"));
+	spawnModeList.setDropDownPosition(ofxDropdown_<std::basic_string<char>>::DD_LEFT);
+	spawnModeList.disableMultipleSelection();
+	spawnModeList.enableCollapseOnSelection();
+	for (auto& item : SimSettings::GetStringToSpawnModeMap())
+	{
+		spawnModeList.add(item.first);
+	}
+	spawnModeList.setSelectedValueByIndex(0, false);
 
 	for (int i = 0; i < MAX_SPECIES; ++i)
 	{
@@ -122,6 +132,7 @@ void ofApp::updateSettings()
 	simSettings.EvaporateSpeed = evaporationSpeedSlider;
 	simSettings.DiffuseSpeed = diffuseSpeedSlider;
 	simSettings.TrailWeight = trailWeightSlider;
+	simSettings.SpawnMode = spawnModeList.selectedValue;
 
 	for (int i = 0; i < MAX_SPECIES; ++i)
 	{
@@ -134,6 +145,7 @@ void ofApp::updateUiBySettings()
 	evaporationSpeedSlider = simSettings.EvaporateSpeed;
 	diffuseSpeedSlider = simSettings.DiffuseSpeed;
 	trailWeightSlider = simSettings.TrailWeight;
+	spawnModeList.setSelectedValueByName(simSettings.SpawnMode, false);
 
 	for (int i = 0; i < MAX_SPECIES; ++i)
 	{
@@ -252,49 +264,4 @@ void ofApp::keyReleased(int key)
 	{
 		reset();
 	}
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
-
 }

@@ -25,6 +25,7 @@ void PresetManager::savePreset(const string& presetName, const SimSettings& simS
 	json["DiffuseSpeed"] = simSettings.DiffuseSpeed;
 	json["TrailWeight"] = simSettings.TrailWeight;
 	json["NumOfTeams"] = simSettings.NumOfTeams;
+	json["SpawnMode"] = simSettings.SpawnMode;
 
 	for (int i = 0; i < MAX_SPECIES; ++i)
 	{
@@ -41,11 +42,7 @@ void PresetManager::savePreset(const string& presetName, const SimSettings& simS
 		json[speciesName]["color"]["a"] = speciesSettings[i].color.a;
 	}
 
-	std::cout << ev << std::endl;
-
 	bool result = json.save(filePath);
-
-	//file.write(ev.asString().c_str(), ev.asString().size());
 }
 
 void PresetManager::loadPreset(const string& presetName, SimSettings& simSettings, SpeciesInfo* speciesSettings)
@@ -67,6 +64,7 @@ void PresetManager::loadPreset(const string& presetName, SimSettings& simSetting
 	simSettings.DiffuseSpeed = json["DiffuseSpeed"].asFloat();
 	simSettings.TrailWeight = json["TrailWeight"].asFloat();
 	simSettings.NumOfTeams = json["NumOfTeams"].asInt();
+	simSettings.SpawnMode = json["SpawnMode"].asString();
 
 	for (int i = 0; i < MAX_SPECIES; ++i)
 	{
