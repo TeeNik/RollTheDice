@@ -97,10 +97,13 @@ void ofApp::setupGui()
 {
 	gui.setup();
 
-	loadPresetButton.addListener(this, &ofApp::loadPreset);
 	savePresetButton.addListener(this, &ofApp::savePreset);
 
-	gui.add(loadPresetButton.setup("Load Preset"));
+	gui.add(presetList.setup("Load Preset"));
+	presetList.setDropDownPosition(ofxDropdown_<std::basic_string<char>>::DD_LEFT);
+	presetList.populateFromDirectory(ofToDataPath("presets"), { "json" });
+	presetList.addListener(this, &ofApp::loadPreset);
+
 	gui.add(savePresetButton.setup("Save Preset"));
 	gui.add(presetNameText.setup("Preset Name", "preset"));
 
@@ -149,7 +152,7 @@ void ofApp::updateUiBySettings()
 
 	for (int i = 0; i < MAX_SPECIES; ++i)
 	{
-		speciesSettingsGUI[i].loadInfo(speciesSettings[i]);
+		speciesSettingsGUI[i].loadInfo(speciesSettings[i], i < simSettings.NumOfTeams);
 	}
 }
 
@@ -160,10 +163,14 @@ void ofApp::reset()
 	trailMapBuffer.updateData(trailMap);
 }
 
-void ofApp::loadPreset()
+void ofApp::loadPreset(std::string& presetPath)
 {
+	std::string presetName = ofSplitString(presetPath, "\\").back();
+	presetName = ofSplitString(presetName, ".").front();
+	presetNameText = presetName;
 	PresetManager::loadPreset(presetNameText, simSettings, speciesSettings);
 	updateUiBySettings();
+	reset();
 }
 
 void ofApp::savePreset()
@@ -247,7 +254,7 @@ void ofApp::draw()
 
 void ofApp::exit()
 {
-	loadPresetButton.removeListener(this, &ofApp::loadPreset);
+	presetList.removeListener(this, &ofApp::loadPreset);
 	savePresetButton.removeListener(this, &ofApp::savePreset);
 }
 

@@ -77,7 +77,7 @@ private:
 	void updateUiBySettings();
 	void reset();
 
-	void loadPreset();
+	void loadPreset(std::string& presetPath);
 	void savePreset();
 
 	ofBufferObject cellsBuffer;
@@ -93,7 +93,7 @@ private:
 
 	ofxPanel gui;
 
-	ofxButton loadPresetButton;
+	ofxDropdown presetList;
 	ofxButton savePresetButton;
 	ofxTextField presetNameText;
 
