@@ -23,8 +23,9 @@ void SpeciesInfoUIGroup::updateInfo(SpeciesInfo& info)
 	info.color = colorSlider;
 }
 
-void SpeciesInfoUIGroup::loadInfo(const SpeciesInfo& info)
+void SpeciesInfoUIGroup::loadInfo(const SpeciesInfo& info, bool isActiveTeam)
 {
+	isOnToggle = isActiveTeam;
 	speedSlider = info.moveSpeed;
 	turnSpeedSlider = info.turnSpeed;
 	senseDistanceSlider = info.senseDistance;
