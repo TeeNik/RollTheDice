@@ -77,8 +77,9 @@ private:
 	void updateUiBySettings();
 	void reset();
 
-	void loadPreset(std::string& presetPath);
+	void onPresetSelected(std::string& presetPath);
 	void savePreset();
+	void loadPreset(const std::string& preset);
 
 	ofBufferObject cellsBuffer;
 	ofBufferObject trailMapBuffer;

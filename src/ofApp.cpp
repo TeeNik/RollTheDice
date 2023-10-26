@@ -102,7 +102,7 @@ void ofApp::setupGui()
 	gui.add(presetList.setup("Load Preset"));
 	presetList.setDropDownPosition(ofxDropdown_<std::basic_string<char>>::DD_LEFT);
 	presetList.populateFromDirectory(ofToDataPath("presets"), { "json" });
-	presetList.addListener(this, &ofApp::loadPreset);
+	presetList.addListener(this, &ofApp::onPresetSelected);
 
 	gui.add(savePresetButton.setup("Save Preset"));
 	gui.add(presetNameText.setup("Preset Name", "preset"));
@@ -163,19 +163,24 @@ void ofApp::reset()
 	trailMapBuffer.updateData(trailMap);
 }
 
-void ofApp::loadPreset(std::string& presetPath)
+void ofApp::onPresetSelected(std::string& presetPath)
 {
 	std::string presetName = ofSplitString(presetPath, "\\").back();
 	presetName = ofSplitString(presetName, ".").front();
 	presetNameText = presetName;
-	PresetManager::loadPreset(presetNameText, simSettings, speciesSettings);
-	updateUiBySettings();
-	reset();
+	loadPreset(presetName);
 }
 
 void ofApp::savePreset()
 {
 	PresetManager::savePreset(presetNameText, simSettings, speciesSettings);
+}
+
+void ofApp::loadPreset(const std::string& preset)
+{
+	PresetManager::loadPreset(preset, simSettings, speciesSettings);
+	updateUiBySettings();
+	reset();
 }
 
 void ofApp::passSpeciesSettingsToShader(ofShader& shader, int speciesIndex, const SpeciesInfo& info)
@@ -254,7 +259,7 @@ void ofApp::draw()
 
 void ofApp::exit()
 {
-	presetList.removeListener(this, &ofApp::loadPreset);
+	presetList.removeListener(this, &ofApp::onPresetSelected);
 	savePresetButton.removeListener(this, &ofApp::savePreset);
 }
 
